@@ -1,0 +1,2774 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan treningowy — Tatry 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b1220;
+  --bg-card: #131b2c;
+  --bg-soft: #0f1828;
+  --bg-elev: #1b243a;
+  --border: #243049;
+  --border-soft: #1c2540;
+  --text: #e8edf5;
+  --text-mid: #b0bbd0;
+  --text-dim: #8593ad;
+  --text-faint: #5b6885;
+
+  /* Sport colors — czyste, mocne ale nie krzyczące */
+  --blue: #5b9eff;
+  --blue-soft: rgba(91, 158, 255, 0.15);
+  --green: #4ade80;
+  --green-soft: rgba(74, 222, 128, 0.15);
+  --orange: #fb923c;
+  --orange-soft: rgba(251, 146, 60, 0.15);
+  --purple: #a78bfa;
+  --purple-soft: rgba(167, 139, 250, 0.15);
+  --red: #f87171;
+  --red-soft: rgba(248, 113, 113, 0.15);
+  --amber: #fbbf24;
+  --amber-soft: rgba(251, 191, 36, 0.15);
+  --teal: #22d3ee;
+  --teal-soft: rgba(34, 211, 238, 0.15);
+
+  --accent: var(--blue);
+  --accent-soft: var(--blue-soft);
+  --done: var(--green);
+  --done-bg: var(--green-soft);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  min-height: 100vh;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(91, 158, 255, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(74, 222, 128, 0.04) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+.app {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* === HEADER === */
+.header {
+  margin-bottom: 40px;
+}
+
+.header-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 36px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+}
+
+/* === STATS === */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text);
+}
+
+.stat-value.blue { color: var(--blue); }
+.stat-value.green { color: var(--green); }
+.stat-value.orange { color: var(--orange); }
+.stat-value.purple { color: var(--purple); }
+
+.stat-sub {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 6px;
+}
+
+/* === GLOBAL PROGRESS === */
+.progress-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+.progress-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 10px;
+}
+
+.progress-pct {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.progress-bar {
+  height: 6px;
+  background: var(--bg-elev);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--teal) 100%);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* === PHASE TABS === */
+.phases {
+  display: flex;
+  gap: 4px;
+  margin: 32px 0 16px;
+  flex-wrap: wrap;
+}
+
+.phase {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.phase:hover { color: var(--text); border-color: var(--text-faint); }
+
+.phase.current {
+  color: var(--text);
+  background: var(--blue-soft);
+  border-color: var(--blue);
+}
+
+/* === WEEK NAV === */
+.week-nav {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: var(--bg-soft);
+  border-color: var(--text-faint);
+}
+
+.nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.nav-btn.today {
+  background: var(--blue);
+  color: #0b1220;
+  border-color: var(--blue);
+  font-weight: 600;
+}
+
+.nav-btn.today:hover {
+  background: #7eb3ff;
+  border-color: #7eb3ff;
+  color: #0b1220;
+}
+
+.week-jump {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 9px 14px;
+  font-size: 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: auto;
+  font-family: inherit;
+}
+
+/* === WEEK CARD === */
+.week-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.week-head {
+  padding: 24px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.week-meta { flex: 1; }
+
+.week-num {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.week-title {
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.week-dates {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.week-phase-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+.tag-p1 { background: var(--blue-soft); color: var(--blue); }
+.tag-p2 { background: var(--green-soft); color: var(--green); }
+.tag-p3 { background: var(--purple-soft); color: var(--purple); }
+.tag-p4 { background: var(--orange-soft); color: var(--orange); }
+
+.week-stats-row {
+  display: flex;
+  gap: 24px;
+}
+
+.wstat {
+  text-align: right;
+}
+
+.wstat-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.wstat-value {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.wstat-value.done { color: var(--green); }
+.wstat-value.intensity { color: var(--orange); }
+
+.week-note {
+  padding: 14px 28px;
+  background: var(--bg-soft);
+  font-size: 13px;
+  color: var(--text-mid);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+/* === WEEK PROGRESS === */
+.week-progress {
+  height: 2px;
+  background: var(--border-soft);
+}
+
+.week-progress-fill {
+  height: 100%;
+  background: var(--green);
+  transition: width 0.4s ease;
+}
+
+/* === DAY ROWS === */
+.days { padding: 0; }
+
+.day {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--border-soft);
+  transition: background 0.15s;
+  position: relative;
+}
+
+.day::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.day:last-child { border-bottom: none; }
+
+.day.is-today { background: linear-gradient(90deg, var(--blue-soft) 0%, transparent 30%); }
+.day.is-today::before { background: var(--blue); }
+.day.is-done { background: linear-gradient(90deg, var(--green-soft) 0%, transparent 30%); }
+.day.is-done::before { background: var(--green); }
+.day.is-past:not(.is-done) { opacity: 0.55; }
+
+.day-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--text-faint);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  background: var(--bg-card);
+}
+.day-check:hover .checkbox { border-color: var(--text-mid); }
+
+.checkbox.checked {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.checkbox.checked::after {
+  content: '';
+  width: 9px;
+  height: 4.5px;
+  border: 1.8px solid var(--bg);
+  border-top: 0;
+  border-right: 0;
+  transform: translateY(-1px) rotate(-45deg);
+}
+
+.day-content {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.day-date {
+  text-align: center;
+  flex-shrink: 0;
+  min-width: 48px;
+}
+
+.day-num {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text);
+}
+.day.is-today .day-num { color: var(--blue); }
+.day.is-done .day-num { color: var(--green); }
+
+.day-dow {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.day-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.day-type {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.day-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+
+.day-km {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 70px;
+}
+
+.day-arrow {
+  color: var(--text-faint);
+  font-size: 14px;
+  margin-left: 4px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.day.expanded .day-arrow { transform: rotate(90deg); color: var(--text-mid); }
+
+/* DAY DETAILS */
+.day-details {
+  display: none;
+  background: var(--bg-soft);
+  border-top: 1px solid var(--border-soft);
+  padding: 22px 28px 24px 76px;
+}
+.day.expanded + .day-details { display: block; }
+
+.intensity-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 11px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.intensity-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.intensity-bars {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.ibar {
+  flex: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 2px;
+}
+.ibar.on { background: var(--orange); }
+
+.intensity-text {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.detail-list { display: flex; flex-direction: column; }
+
+.detail-section {
+  font-size: 11px;
+  color: var(--blue);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 14px 0 8px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 13px;
+}
+.detail-row:last-child { border-bottom: none; }
+
+/* Special styling for exercise blocks */
+.detail-row.exercise-name {
+  background: var(--blue-soft);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border-bottom: none;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+.detail-row.exercise-name .detail-label {
+  color: var(--blue);
+  font-weight: 700;
+  font-size: 12px;
+}
+.detail-row.exercise-name .detail-value {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.detail-row.exercise-how .detail-label {
+  color: var(--green);
+}
+.detail-row.exercise-errors .detail-label {
+  color: var(--orange);
+}
+.detail-row.exercise-easier .detail-label {
+  color: var(--text-dim);
+}
+
+.detail-label {
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* TYPE COLORS — sportowe, czytelne */
+.type-bieg { background: var(--blue-soft); color: var(--blue); }
+.type-sila { background: var(--green-soft); color: var(--green); }
+.type-interw { background: var(--red-soft); color: var(--red); }
+.type-tempo { background: var(--purple-soft); color: var(--purple); }
+.type-dlugi { background: var(--orange-soft); color: var(--orange); }
+.type-odp { background: var(--bg-elev); color: var(--text-dim); }
+.type-marsz { background: var(--amber-soft); color: var(--amber); }
+.type-mix { background: var(--teal-soft); color: var(--teal); }
+
+/* Selection */
+::selection { background: var(--blue); color: var(--bg); }
+
+/* Scrollbar dark */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-soft); }
+
+/* CONTROLS */
+.controls {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-mid);
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.btn:hover {
+  background: var(--bg-soft);
+  border-color: var(--text-faint);
+  color: var(--text);
+}
+
+.btn-danger { color: var(--red); }
+.btn-danger:hover {
+  background: var(--red-soft);
+  border-color: var(--red);
+}
+
+.footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-faint);
+  line-height: 1.8;
+}
+
+/* MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  max-width: 360px;
+  width: 100%;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6);
+}
+
+.modal h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.modal p {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-bottom: 22px;
+  line-height: 1.6;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+@media (max-width: 720px) {
+  .app { padding: 24px 16px 60px; }
+  .title { font-size: 28px; }
+  .week-head { padding: 20px 18px; flex-direction: column; }
+  .week-stats-row { width: 100%; gap: 16px; justify-content: space-between; }
+  .wstat { text-align: left; }
+  .week-title { font-size: 18px; }
+  .day-content { padding: 14px 14px; gap: 12px; }
+  .day-check { width: 48px; }
+  .day-date { min-width: 40px; }
+  .day-num { font-size: 18px; }
+  .day-name { font-size: 13px; }
+  .day-km { font-size: 14px; min-width: 56px; }
+  .day-details { padding: 18px 16px 22px 64px; }
+  .detail-row { grid-template-columns: 1fr; gap: 4px; }
+  .stat-value { font-size: 22px; }
+}
+
+::selection { background: var(--blue); color: var(--bg); }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<div class="header">
+  <div class="header-meta">
+    <span>Plan treningowy</span>
+    <span id="today-stamp">—</span>
+  </div>
+
+  <h1 class="title">Tatry zimą i półmaraton poniżej 2 godzin</h1>
+  <div class="subtitle">36 tygodni · od 27 kwietnia 2026 do 31 grudnia 2026 · 6 dni / tydzień</div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Postęp</div>
+      <div class="stat-value blue" id="stat-progress">0%</div>
+      <div class="stat-sub" id="stat-progress-sub">0 / 252 dni</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Tydzień</div>
+      <div class="stat-value purple" id="stat-week">—</div>
+      <div class="stat-sub" id="stat-week-sub">faza 1</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Kilometry</div>
+      <div class="stat-value green" id="stat-km">0</div>
+      <div class="stat-sub">przebiegnięte</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Streak</div>
+      <div class="stat-value orange" id="stat-streak">0</div>
+      <div class="stat-sub">dni z rzędu</div>
+    </div>
+  </div>
+
+  <div class="progress-card">
+    <div class="progress-head">
+      <span>Czas planu</span>
+      <span class="progress-pct" id="gp-text">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="gp-fill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="phases" id="phase-pills"></div>
+
+<div class="week-nav">
+  <button class="nav-btn" id="prev-week">← Poprzedni</button>
+  <button class="nav-btn today" id="today-btn">Dziś</button>
+  <button class="nav-btn" id="next-week">Następny →</button>
+  <select class="week-jump" id="week-jump"></select>
+</div>
+
+<div id="week-container"></div>
+
+<div class="controls">
+  <button class="btn" id="export-btn">Eksportuj postęp</button>
+  <button class="btn btn-danger" id="reset-btn">Reset</button>
+</div>
+
+<div class="footer">
+  Dane zapisane lokalnie w przeglądarce · działa offline
+</div>
+
+</div>
+
+<div class="modal-overlay" id="reset-modal">
+  <div class="modal">
+    <h3>Resetować postępy?</h3>
+    <p>Wszystkie odhaczenia znikną. Operacji nie można cofnąć.</p>
+    <div class="modal-actions">
+      <button class="btn" id="reset-cancel">Anuluj</button>
+      <button class="btn btn-danger" id="reset-confirm">Resetuj</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+// === BIBLIOTEKA ĆWICZEŃ ===
+// Każde ćwiczenie: jak robić, błędy, łatwiejsza wersja
+// Profil: 16 lat, 66-72 kg, drążek + hantel 10kg, początkujący
+
+const EXERCISES = {
+
+  // ========== GÓRNA CZĘŚĆ - CIĄGNIĘCIE ==========
+
+  pullups: {
+    name: 'Podciąganie nachwytem',
+    how: 'Złap drążek dłońmi do przodu (nachwyt), szerokość trochę szersza niż barki. Wisisz z prostymi rękami i lekko napiętym brzuchem. Pociągnij się W GÓRĘ aż BRODA przejdzie nad drążek. Kontrolnie opuść się w 2 sekundy do pełnego zwisu. To jest 1 powtórzenie.',
+    errors: 'Nie kołysz się ciałem żeby "podskoczyć" — to oszustwo. Nie zatrzymuj się na pół drogi. Nie spadaj z drążka — kontrolne opuszczanie buduje siłę.',
+    easier: 'Jeśli nie dasz rady — zrób "negatywne": wskocz na drążek z brodą nad nim, opuszczaj się powoli przez 4-5 sekund. Powtórz 5 razy zamiast podciągania.',
+    progress: 'Cel: dojść do 10 czystych powtórzeń jednym ciągiem do końca planu.'
+  },
+
+  pullup_holds: {
+    name: 'Wisienia na drążku z brodą u góry',
+    how: 'Wskocz na drążek tak żeby BRODA była nad drążkiem. Trzymaj się tam, ramiona ściągnięte w dół, łokcie zgięte. Wytrzymuj ile dasz radę.',
+    errors: 'Nie wciągaj barków do uszu — staraj się trzymać je nisko.',
+    easier: 'Jak nie dasz rady wskoczyć — stań na taborecie i wskocz z asystą.',
+  },
+
+  rows_inverted: {
+    name: 'Wiosłowanie pod drążkiem (australian rows)',
+    how: 'Ustaw drążek na wysokości bioder (lub niżej, np. między dwoma poręczami). Połóż się pod nim na plecach, złap drążek nachwytem na szerokość barków. Nogi proste, pięty na podłodze. Ciało jak deska. Pociągnij KLATKĘ DO DRĄŻKA, łokcie idą do tyłu wzdłuż ciała. Opuść kontrolnie. To imitacja wiosłowania.',
+    errors: 'Nie wypychaj brzucha — pośladki napięte. Nie rób krótkich amplitud.',
+    easier: 'Im wyżej drążek — tym łatwiej. Zegnij kolana też pomaga.',
+  },
+
+  // ========== GÓRNA CZĘŚĆ - PCHANIE ==========
+
+  pushups: {
+    name: 'Pompki klasyczne',
+    how: 'Dłonie na podłodze trochę szerzej niż barki, palce do przodu. Ciało prosto od pięt do głowy — jak deska. Opuść się aż KLATKA będzie 5cm od podłogi. Łokcie idą lekko do tyłu (nie szeroko na boki, ~45° od tułowia). Wypchnij się z powrotem.',
+    errors: 'Nie wypychaj brzucha do dołu — pośladki napięte. Nie wypycaj samych łokci na boki — barki bolą. Pełna amplituda — klatka prawie podłogi.',
+    easier: 'Pompki na kolanach (kolana zamiast pięt na podłodze).',
+  },
+
+  pushups_wide: {
+    name: 'Pompki szerokie',
+    how: 'Jak pompki klasyczne, ale dłonie ZNACZNIE szerzej niż barki — ok. 1.5x szerzej. Łokcie wychodzą bardziej na boki. To bardziej angażuje klatkę piersiową.',
+    errors: 'Bark może protestować jeśli ramiona za szeroko — znajdź wygodną pozycję ale szerszą niż klasyczne.',
+  },
+
+  pushups_diamond: {
+    name: 'Pompki diamentowe',
+    how: 'Dłonie razem POD klatką piersiową — kciuki i palce wskazujące tworzą kształt rombu/diamentu. Łokcie blisko ciała. Opuszczasz się aż klatka dotknie dłoni. To bardziej obciąża tricepsy.',
+    errors: 'Nie odchylaj rąk od siebie podczas wypychania.',
+    easier: 'Diamentowe na kolanach albo z dłońmi nieco rozsuniętymi.',
+  },
+
+  pushups_pike: {
+    name: 'Pompki pikowe',
+    how: 'Ustaw się jak pies głową w dół (down dog z jogi): biodra wysoko w górę, ciało w kształcie odwróconego V, dłonie i stopy na podłodze. Z tej pozycji opuść głowę między ręce — pompka. Wypchnij się z powrotem. To imitacja wyciskania nad głowę i buduje barki.',
+    errors: 'Im bardziej biodra w górę i głowa w dół — tym bardziej pracują barki. Nie zaginaj pleców.',
+    easier: 'Mniej pochylenia — bardziej jak normalne pompki. Albo nogi na podłodze, dłonie wyżej (np. na ławce).',
+  },
+
+  pushups_decline: {
+    name: 'Pompki z nogami na ławce',
+    how: 'Pompki, ale stopy uniesione na ławce. Dłonie na podłodze. Cięższa wersja — bardziej obciąża barki i górną klatkę.',
+    errors: 'Nie zwieszaj bioder — ciało prosto.',
+    easier: 'Mniej wysoka ławka, lub klasyczne pompki.',
+  },
+
+  // ========== HANTEL 10kg ==========
+
+  rows_dumbbell: {
+    name: 'Wiosłowanie hantlem w opadzie',
+    how: 'Stań w lekkim rozkroku, pochyl się do przodu z prostymi plecami (jak gdybyś chciał spojrzeć na podłogę 1m przed sobą). Hantel w jednej ręce zwisa swobodnie. Druga ręka oparta na ławce/kolanie dla stabilizacji. Pociągnij hantel DO BIODRA (nie do klatki) — łokieć idzie wzdłuż ciała do tyłu. Opuść kontrolnie. Zmień rękę.',
+    errors: 'Nie skręcaj tułowia żeby pomóc sobie. Plecy proste cały czas — nie zaokrąglaj. Pociągnięcie idzie z pleców, nie z bicepsa.',
+    easier: 'Mniej pochylenia (45° zamiast 90°).',
+  },
+
+  shoulder_press_dumbbell: {
+    name: 'Wyciskanie hantla nad głowę',
+    how: 'Stań prosto, hantel w jednej ręce na wysokości barku, dłoń skierowana do siebie lub do przodu. Wypchnij hantel pionowo nad głowę aż ręka jest prosta. Powoli opuść do barku. Zrób serie jedną ręką, potem drugą.',
+    errors: 'Nie wyginaj pleców do tyłu żeby pomóc sobie — pośladki napięte. Nie blokuj łokcia w sztywnej pozycji u góry.',
+    easier: 'Mniejszy hantel, albo pompki pikowe zamiast.',
+  },
+
+  curl_dumbbell: {
+    name: 'Uginanie hantla na biceps',
+    how: 'Stań prosto z hantlem w jednej ręce, ramię wzdłuż ciała, dłoń do siebie. Zegnij łokieć podnosząc hantel do barku — DŁOŃ obraca się tak żeby na końcu była skierowana do ciebie. Opuść powoli. Łokieć cały czas blisko ciała, nie wybiegaj nim do przodu.',
+    errors: 'Nie kołysz się ciałem. Nie wyrzucaj hantla — kontrola.',
+  },
+
+  // ========== NOGI ==========
+
+  squats: {
+    name: 'Przysiady własnym ciężarem',
+    how: 'Stopy na szerokość barków, palce stóp lekko na zewnątrz (~15°). Ręce wyciągnięte do przodu dla balansu. Zacznij ruch od ODSUNIĘCIA BIODER DO TYŁU (jak siadasz na krzesło), potem zegnij kolana. Schodzisz tak nisko jak możesz z prostymi plecami — najlepiej aż uda są równolegle do podłogi (lub niżej). Wstań napierając przez pięty.',
+    errors: 'Nie wpadaj kolanami do środka. Nie unoś pięt z podłogi. Plecy proste, klatka do góry — nie pochylaj się za bardzo.',
+    easier: 'Trzymaj się czegoś z przodu (poręcz) dla balansu, albo schodź mniej głęboko.',
+  },
+
+  squats_jump: {
+    name: 'Przysiady z wyskokiem',
+    how: 'Klasyczny przysiad, ale z dolnej pozycji EKSPLOZYJNIE wyskocz w górę. Wyląduj miękko na palcach i przejdź płynnie w kolejny przysiad. To buduje moc — kluczowe dla biegania.',
+    errors: 'Nie ląduj na sztywnych nogach — zawsze miękko, kolana ugięte. Lądowanie pełną stopą.',
+    easier: 'Klasyczne przysiady bez wyskoku jeśli kolana protestują.',
+  },
+
+  bulgarian_split_squats: {
+    name: 'Przysiady bułgarskie (split squat)',
+    how: 'Stań plecami do ławki, ok. 60cm od niej. Postaw TYLNĄ stopę na ławce (palce stopy na ławce, lub całe podbicie). Przednia stopa daleko z przodu. Powoli zegnij PRZEDNIE kolano i opuść się aż TYLNE kolano prawie dotknie podłogi. Wstań napierając przez piętę przedniej nogi. To brutalne ćwiczenie na uda i pośladki — jedna noga pracuje za dwie.',
+    errors: 'Przednia stopa musi być WYSTARCZAJĄCO daleko — jeśli za blisko ławki, kolano wyjedzie poza palce stopy i zaboli. Nie pochylaj się do przodu.',
+    easier: 'Trzymaj się czegoś z boku dla balansu (krzesło). Nie schodź tak głęboko — np. tylko do połowy.',
+  },
+
+  bulgarian_split_squats_weighted: {
+    name: 'Przysiady bułgarskie z hantlem',
+    how: 'Jak bułgarskie, ale trzymasz hantel 10kg w jednej ręce wzdłuż ciała (po stronie nogi która stoi z tyłu). Zwiększa obciążenie i wymusza stabilizację rdzenia.',
+    errors: 'Hantel nie może kołysać się — trzymaj go pewnie.',
+  },
+
+  lunges: {
+    name: 'Wykroki',
+    how: 'Stań prosto. Zrób krok DO PRZODU jedną nogą — duży krok. Zegnij obydwa kolana aż PRZEDNIE udo będzie równolegle do podłogi, a TYLNE kolano blisko podłogi. Wróć do pozycji wyjściowej napierając przez piętę przedniej nogi. Zmień nogę.',
+    errors: 'Nie wpadaj kolanem do środka. Krok wystarczająco długi — jeśli za krótki, kolano wyjedzie poza palce.',
+  },
+
+  box_jumps: {
+    name: 'Wskoki na ławkę',
+    how: 'Stań przed ławką (ok. 40-50cm wysokości). Lekko ugnij kolana, zamachnij rękami w tył, potem EKSPLOZYJNIE wyskocz na ławkę. Wyląduj OBYDWIEMA stopami jednocześnie, w pozycji półprzysiadu (kolana ugięte, miękko). Stań prosto na ławce. Zejdź — KROKIEM, nie skokiem (zeskakiwanie obciąża kolana).',
+    errors: 'Nie ląduj na prostych nogach — zawsze ugięte. Zsiadaj krokiem nie skokiem. Jak nie pewny — ławka niższa.',
+    easier: 'Niższa ławka albo niski stołek.',
+  },
+
+  calf_raises_single: {
+    name: 'Wspięcia na palce na jednej nodze',
+    how: 'Stań na stopniu (krawędzi schoda) jedną stopą — pięta wisi w powietrzu, podbicie i palce na stopniu. Druga noga uniesiona. Trzymaj się czegoś dla balansu jedną ręką. Opuść piętę MAKSYMALNIE w dół (rozciąganie łydki), potem wepnij się WYSOKO na palce. Pełen zakres ruchu. Zmień nogę po serii.',
+    errors: 'Pełna amplituda — to klucz. Nie odbijaj się — kontrola w obie strony.',
+    easier: 'Na podłodze (bez stopnia, mniejszy zakres) albo obie nogi naraz.',
+  },
+
+  // ========== BRZUCH / CORE ==========
+
+  plank: {
+    name: 'Deska klasyczna (plank)',
+    how: 'Połóż się na brzuchu, podnieś się na PRZEDRAMIONACH (od łokcia do dłoni na podłodze, łokcie pod barkami) i palcach stóp. Ciało prosto od pięt do głowy — JAK DESKA. Pośladki napięte, brzuch napięty, wciąganie pępka do kręgosłupa. Patrz w podłogę. Wytrzymaj.',
+    errors: 'NIE WYPYCHAJ TYŁKA W GÓRĘ (jak pies głową w dół). Nie zwieszaj bioder w dół (jak banan). Nie wstrzymuj oddechu.',
+    easier: 'Deska na kolanach jeśli klasyczna nie wychodzi.',
+  },
+
+  plank_side: {
+    name: 'Deska boczna',
+    how: 'Połóż się na boku. Podnieś się na JEDNYM przedramieniu (łokieć pod barkiem) i KRAWĘDZI stopy (stopy na sobie lub jedna za drugą). Ciało prosto od stóp do głowy. Druga ręka wyciągnięta do góry albo na biodrze. Wytrzymaj. Zmień stronę.',
+    errors: 'Biodro nie może opadać. Nie skręcaj się do przodu.',
+    easier: 'Dolne kolano na podłodze — łatwiejsza wersja.',
+  },
+
+  plank_side_dynamic: {
+    name: 'Deska boczna z opuszczaniem bioder',
+    how: 'Pozycja deski bocznej. Powoli opuść biodro w dół (prawie dotyka podłogi), potem wepnij je z powrotem w górę nawet trochę WYŻEJ niż linia ciała. To dynamiczna wersja — buduje siłę skośnych mięśni brzucha.',
+    errors: 'Wolny ruch, kontrolny — to nie szybkie kołysanie.',
+  },
+
+  hollow_body: {
+    name: 'Hollow body hold (wgłębienie)',
+    how: 'Połóż się na plecach. Unieś NOGI 15cm nad podłogę (proste lub lekko ugięte). Unieś też BARKI i głowę nad podłogę. Dolny odcinek pleców WCIŚNIĘTY w podłogę. Ramiona wyciągnięte za głowę. Ciało wygląda jak banan z lekko wgłębionym brzuchem. Wytrzymaj.',
+    errors: 'Dolny odcinek pleców MUSI być wciśnięty w podłogę — jeśli się odrywa, ciało za bardzo prostuje. Zegnij kolana albo skróć ręce żeby było łatwiej.',
+    easier: 'Z ugiętymi kolanami i rękami wzdłuż ciała.',
+  },
+
+  leg_raises_hanging: {
+    name: 'Unoszenie nóg w zwisie na drążku',
+    how: 'Złap drążek nachwytem, zwisaj z prostymi rękami. Z brzucha (NIE z bioder) podnieś nogi do góry. Wersja łatwa: kolana do klatki. Wersja trudna: PROSTE nogi do poziomu (lub wyżej). Opuść kontrolnie — to ważne, w 2-3 sekundy.',
+    errors: 'Nie kołysz się! Jak się zaczynasz kołysać — przerwij i zacznij od nowa. Brzuch napięty cały czas.',
+    easier: 'Kolana do klatki zamiast prostych nóg. Albo leg raises na podłodze (leżąc).',
+  },
+
+  leg_raises_floor: {
+    name: 'Unoszenie nóg leżąc',
+    how: 'Połóż się na plecach, ręce wzdłuż ciała lub pod pośladkami. Nogi proste razem. Unieś nogi prostopadle do podłogi (90°). Powoli opuść — ale NIE DOTYKAJ podłogi. Zatrzymaj 5cm nad podłogą, podnieś znowu.',
+    errors: 'Dolne plecy w podłodze cały czas. Jeśli się odrywają — zegnij kolana albo unieś nogi tylko trochę.',
+  },
+
+  russian_twists: {
+    name: 'Russian twists (rotacje)',
+    how: 'Usiądź na podłodze, kolana ugięte, pięty na podłodze (lub stopy uniesione dla trudniejszej wersji). Tułów odchylony do tyłu pod kątem ~45° — czujesz brzuch pracujący. Ręce złożone razem przed klatką (lub trzymaj hantel 10kg dla większego wyzwania). Skręć tułów w prawo, dotknij rękoma podłogi obok biodra. Skręć w lewo, dotknij. To 1 powtórzenie (lewo+prawo = 2 powt.).',
+    errors: 'Skręca się TUŁÓW, a nie tylko ręce. Kontrola — nie szarp się.',
+    easier: 'Stopy na podłodze, mniej odchylenia.',
+  },
+
+  mountain_climbers: {
+    name: 'Mountain climbers (wspinacz)',
+    how: 'Pozycja jak w pompce — wysoki plank na wyprostowanych rękach. SZYBKO przyciągaj kolano do klatki, zmieniając nogi. Jakbyś biegł w pozycji pompki. Kierunek BIEGOWY: szybko, dynamicznie. Czas pracy w sekundach (np. 30s) — nie liczysz powtórzeń.',
+    errors: 'Biodra nie mogą podskakiwać w górę. Pozycja stabilna jak deska.',
+    easier: 'Wolniejsze tempo — chód zamiast biegu.',
+  },
+
+  dead_bug: {
+    name: 'Dead bug (martwy żuk)',
+    how: 'Połóż się na plecach. Unieś ręce prosto nad klatkę (do sufitu) i nogi z ugiętymi kolanami w 90° (kolana nad biodrami). Powoli opuść JEDNĄ rękę za głowę I PRZECIWNĄ nogę wyprostuj prawie do podłogi (nie dotyka). Wróć. Zmień stronę. Dolne plecy CAŁY CZAS w podłodze.',
+    errors: 'Plecy się odrywają = za szybko/za daleko. Zwolnij.',
+  },
+
+  // ========== STRETCHING ==========
+
+  stretching_basic: {
+    name: 'Stretching pomeczowy',
+    how: '1) Łydki — palce stóp na schodzie/krawędzi, pięta opuszczona w dół, 30s każda noga. 2) Mięsień czworogłowy — stań na jednej nodze, drugą zegnij łapiąc stopę za sobą, przyciągnij piętę do pośladka, 30s każda. 3) Hamstringi — siedząc, jedna noga prosta, dotknij palców stóp, 30s każda. 4) Pośladki — leżąc, krzyż jednej nogi nad drugą zgiętą, przyciągnij dolną do klatki, 30s każda. 5) Plecy — pozycja dziecka (kolana szeroko, ręce wyciągnięte do przodu), 1 minuta.',
+    errors: 'Nie odbijaj się w rozciąganiu — trzymaj statycznie. Nie do bólu — do przyjemnego rozciągnięcia.',
+  }
+};
+
+
+// PLAN TRENINGOWY — 36 TYGODNI · v3 z biblioteką ćwiczeń
+// Każde ćwiczenie siłowe odwołuje się do EXERCISES po ID
+// Aplikacja renderuje pełny opis przy rozwinięciu dnia
+
+const PLAN_START_DATE = new Date(2026, 3, 27);
+const DAYS_PL = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nd'];
+const MONTHS_PL = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca',
+                    'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
+const MONTHS_PL_SHORT = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze',
+                          'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
+
+const PHASES = [
+  { id: 'p1', name: 'Faza 1 — Fundament', weeks: [1,2,3,4,5,6,7], color: '#5b9eff' },
+  { id: 'p2', name: 'Faza 2 — Budowa', weeks: [8,9,10,11,12,13,14,15], color: '#4ade80' },
+  { id: 'p3', name: 'Faza 3 — Półmaraton', weeks: [16,17,18,19,20,21,22,23,24], color: '#a78bfa' },
+  { id: 'p4', name: 'Faza 4 — Tatry', weeks: [25,26,27,28,29,30,31,32,33,34,35,36], color: '#fb923c' }
+];
+
+function d(type, name, km, intensity, details) {
+  return { t: type, n: name, k: km, i: intensity, d: details };
+}
+
+const TYPES = {
+  L: 'bieg łatwy', S: 'siła', I: 'interwały', T: 'tempo',
+  D: 'długi bieg', O: 'odpoczynek', M: 'marsz', X: 'siła+bieg'
+};
+
+// === SZABLONY BIEGOWE ===
+
+const easyRun = (km, pace) => d(TYPES.L, 'Łatwy bieg', km + ' km', 1, [
+  ['ROZGRZEWKA', ''],
+  ['Marsz', '3 min — rozrusz nogi'],
+  ['Krążenia ramion', '10× w przód, 10× w tył'],
+  ['Wymachy nogami', '10× każdą nogą do przodu i bok'],
+  ['BIEG GŁÓWNY', ''],
+  ['Dystans', km + ' km ciągłe'],
+  ['Tempo', (pace || '5:30') + '/km — strefa 2'],
+  ['Tętno', 'Max 150 BPM. Jak więcej — zwolnij'],
+  ['CHŁODZENIE', ''],
+  ['Marsz', '3 min'],
+  ['Stretching', '10 min: łydki, uda, hamstringi, pośladki']
+]);
+
+const recovery = () => d(TYPES.O, 'Pełny odpoczynek', '—', 0, [
+  ['ZASADY', ''],
+  ['Aktywność', 'Zero treningu — odpoczynek to TRENING'],
+  ['Sen', 'Min. 9h — to tu rośniesz'],
+  ['Jedzenie', '140-160g białka, dużo węglowodanów'],
+  ['Rolowanie (opcja)', 'Foam roller 10 min wieczorem — łydki, ITB, plecy'],
+  ['DLACZEGO TO WAŻNE', ''],
+  ['', 'Mięśnie regenerują się i rosną tylko w odpoczynku. Bez tego: kontuzja w tygodniu 5-6.']
+]);
+
+// Helper do treningów siłowych — generuje sekcje z biblioteki
+const ex = (exerciseId, sets, reps, rest) => [
+  ['ĆWICZENIE: ' + EXERCISES[exerciseId].name, sets + ' × ' + reps + (rest ? ' · odp. ' + rest : '')],
+  ['JAK', EXERCISES[exerciseId].how],
+  ['BŁĘDY', EXERCISES[exerciseId].errors || '—'],
+  ['ŁATWIEJ', EXERCISES[exerciseId].easier || '—']
+];
+
+// === BIEGI Z OPISEM TECHNIKI ===
+
+const intervalRun = (name, km, distance, count, pace, rest) => {
+  const details = [
+    ['ROZGRZEWKA', '— BIEG —'],
+    ['Marsz dynamiczny', '3 min'],
+    ['Trucht', '10 min @ 5:45/km'],
+    ['Skipy A', '20m × 2 (wysokie kolana, krótkie kroki)'],
+    ['Strides', '4 × 100m przyspieszenia 70-80%'],
+    ['INTERWAŁY GŁÓWNE', ''],
+    [count + ' × ' + distance, '@ ' + pace + '/km — to ma palić'],
+    ['Odpoczynek między', rest + ' marsz lub trucht — oddech wraca do normy'],
+    ['Każdy interwał', 'Zacznij kontrolnie, ostatnie 50m mocniej'],
+    ['CHŁODZENIE', ''],
+    ['Trucht', '5 min @ 6:00/km'],
+    ['Marsz', '3 min'],
+    ['Stretching', '15 min — szczególnie łydki i uda']
+  ];
+  return d(TYPES.I, name, km + ' km + siła', 5, details);
+};
+
+const tempoRun = (km, tempoKm, tempoPace) => d(TYPES.T, 'Bieg tempowy', km + ' km', 4, [
+  ['ROZGRZEWKA', ''],
+  ['Trucht', '10 min @ 5:45/km'],
+  ['Strides', '4 × 100m'],
+  ['BIEG TEMPOWY', ''],
+  ['Dystans tempowy', tempoKm + ' km @ ' + tempoPace + '/km'],
+  ['Charakter', 'Wymagające ale do utrzymania. Możesz mówić krótkie zdania, nie pełne.'],
+  ['Tętno', '160-170 BPM (próg mleczanowy)'],
+  ['CHŁODZENIE', ''],
+  ['Trucht', '5 min'],
+  ['Stretching', '10 min']
+]);
+
+const longRun = (km, pace, gels) => d(TYPES.D, 'Długi bieg', km + ' km', 3, [
+  ['PRZED BIEGIEM', ''],
+  ['Wieczór wcześniej', 'Więcej węglowodanów (makaron, ryż)'],
+  ['Śniadanie 2h przed', 'Owsianka + banan + jajko'],
+  ['Nawodnienie', 'Wypij 500ml wody na 30 min przed'],
+  ['BIEG', ''],
+  ['Dystans', km + ' km'],
+  ['Tempo', pace + '/km — komfortowo'],
+  ['Teren', 'Park / ścieżka leśna jeśli możliwe'],
+  ['Żywienie w trakcie', gels || 'Banan w połowie'],
+  ['Picie', 'Łyk wody co 15-20 min'],
+  ['PO BIEGU', ''],
+  ['Pierwsze 30 min', 'Ryż 100g + kurczak/jajka — okno regeneracyjne'],
+  ['Stretching', '15 min'],
+  ['Rolowanie', '10 min — łydki, uda, ITB']
+]);
+
+// === PLAN ===
+
+const WEEKS = [
+  // ============ FAZA 1: FUNDAMENT ============
+
+  // TYDZIEŃ 1
+  {
+    n: 1, totalKm: 41, intensity: 3, phase: 'p1',
+    note: 'Start. Wprowadzasz nowe bodźce. Pierwsze treningi siłowe — jeśli czujesz że za dużo, zmniejsz serie o 1.',
+    days: [
+      d(TYPES.I, 'Interwały 500m × 5 + siła górna', '6.5 km + siła', 4, [
+        ['ROZGRZEWKA', ''],
+        ['Trucht', '2 km @ 5:45/km'],
+        ['Strides', '4 × 100m przyspieszenia'],
+        ['INTERWAŁY', ''],
+        ['5 × 500m', '@ 4:50/km, odp. 90s marsz'],
+        ['Chłodzenie', '2 km @ 5:45/km'],
+        ['SIŁA GÓRNA — od razu po biegu', ''],
+        ...ex('pullups', 4, 'max (3-5 powt.)', '90s'),
+        ...ex('pushups_wide', 4, '15', '60s'),
+        ...ex('rows_dumbbell', 3, '12 każda ręka', '90s'),
+        ...ex('plank', 3, '30s', '30s'),
+        ['Czas łączny', '~80 min'],
+        ['UWAGA', 'Jeśli to PIERWSZY tydzień siłowych — bądź ostrożny. Lepiej zrobić mniej dobrze niż więcej źle.']
+      ]),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B — nogi + core', '50 min', 4, [
+        ['ROZGRZEWKA', ''],
+        ['Pajacyki', '30 sekund'],
+        ['Krążenia bioder', '10× w każdą stronę'],
+        ['Wymachy nóg', '10× każda noga do przodu i bok'],
+        ['Przysiady bez ciężaru', '15 powtórzeń żeby się rozgrzać'],
+        ['SIŁA — wykonuj kolejno', ''],
+        ...ex('bulgarian_split_squats', 3, '8 każda noga', '90s'),
+        ...ex('squats_jump', 3, '8', '90s'),
+        ...ex('calf_raises_single', 3, '12 każda noga', '60s'),
+        ...ex('plank_side', 3, '20s każda strona', '30s'),
+        ...ex('hollow_body', 3, '20s', '30s'),
+        ...ex('russian_twists', 3, '20 (10 w każdą stronę)', '30s'),
+        ['CHŁODZENIE', ''],
+        ['Stretching', '10 min: czwórogłowy, pośladki, łydki']
+      ]),
+      tempoRun(9, 4, '5:00'),
+      d(TYPES.X, 'Siła A + bieg fartlek', 'siła + 8 km', 4, [
+        ['NAJPIERW SIŁA GÓRNA', ''],
+        ...ex('pullups', 4, '4-6', '90s'),
+        ...ex('pushups', 4, '20', '60s'),
+        ...ex('shoulder_press_dumbbell', 3, '10 każda ręka', '60s'),
+        ...ex('rows_inverted', 3, '10', '60s'),
+        ...ex('leg_raises_hanging', 3, '8 (kolana do klatki)', '60s'),
+        ['PO 10 MIN PRZERWY — BIEG', ''],
+        ['Trucht', '1 km rozgrzewka @ 5:45/km'],
+        ['Fartlek 7 km', '3 min @ 4:50/km, 2 min @ 5:40/km × powtórzenia'],
+        ['Cel fartleku', 'Uczyć ciało zmieniać tempo przy zmęczeniu — jak w Tatrach na podejściu'],
+        ['Stretching', '10 min']
+      ]),
+      longRun(10, '5:35-5:45', 'Banan po 6 km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 2
+  {
+    n: 2, totalKm: 46, intensity: 4, phase: 'p1',
+    note: 'Wzrost objętości. Long do 13 km — pierwsze prawdziwe wyzwanie wytrzymałościowe.',
+    days: [
+      intervalRun('Interwały 400m × 10 + siła', 9, '400m', 10, '4:45', '90s'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B + schody', '60 min', 4, [
+        ['ROZGRZEWKA', ''],
+        ['Pajacyki', '30s'],
+        ['Wymachy nóg', '10× każda'],
+        ['Przysiady', '15 bez ciężaru'],
+        ['SCHODY Z PLECAKIEM', ''],
+        ['Plecak', '5 kg (np. książki/butelki wody)'],
+        ['Czas', '12 minut wchodzenia'],
+        ['Tempo', 'Marszowe — 1 stopień na sekundę'],
+        ['Cel', 'Symulacja podejścia tatrzańskiego'],
+        ['Po schodach', '2 min odpoczynku, woda'],
+        ['SIŁA NÓG + CORE', ''],
+        ...ex('bulgarian_split_squats', 4, '10 każda noga', '90s'),
+        ...ex('box_jumps', 3, '8', '90s'),
+        ...ex('calf_raises_single', 3, '15 każda noga', '60s'),
+        ...ex('plank', 3, '40s', '30s'),
+        ...ex('plank_side', 3, '25s każda', '30s'),
+        ...ex('mountain_climbers', 3, '30s', '30s'),
+        ['Stretching', '10 min']
+      ]),
+      tempoRun(9, 5, '5:00'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 8 km', 4, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 4, '5-7', '90s'),
+        ...ex('pushups_wide', 4, '18', '60s'),
+        ...ex('rows_dumbbell', 3, '12 każda', '90s'),
+        ...ex('pushups_pike', 3, '8', '60s'),
+        ...ex('leg_raises_hanging', 4, '10', '60s'),
+        ['PO 10 MIN — BIEG', ''],
+        ['Trucht', '1 km @ 5:45/km'],
+        ['Fartlek 7 km', '3 min @ 4:45/km, 2 min @ 5:35/km'],
+        ['Stretching', '10 min']
+      ]),
+      longRun(13, '5:30-5:40', 'Banan po 8 km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 3
+  {
+    n: 3, totalKm: 52, intensity: 4, phase: 'p1',
+    note: 'Pierwsze interwały 800m. Long 14 km — granica półmaratonu już bliżej.',
+    days: [
+      intervalRun('Interwały 800m × 6 + siła', 11, '800m', 6, '4:50', '90s marsz'),
+      easyRun(8, '5:30'),
+      d(TYPES.S, 'Siła B + schody 15 min', '70 min', 5, [
+        ['ROZGRZEWKA', ''],
+        ['Pajacyki', '45s'],
+        ['Wymachy nóg', '10× każda'],
+        ['Przysiady + wykroki', '10+10 bez ciężaru'],
+        ['SCHODY Z PLECAKIEM', ''],
+        ['Plecak', '8 kg'],
+        ['Czas', '15 minut'],
+        ['Tempo', 'Trochę szybciej niż tydzień 2'],
+        ['Klatka piersiowa', 'Klatka do góry, plecy proste, nie pochylaj się'],
+        ['SIŁA NÓG + CORE', ''],
+        ...ex('bulgarian_split_squats', 5, '12 każda noga', '90s'),
+        ...ex('box_jumps', 4, '10', '90s'),
+        ...ex('calf_raises_single', 4, '15 każda', '60s'),
+        ...ex('plank', 4, '45s', '30s'),
+        ...ex('hollow_body', 4, '25s', '30s'),
+        ...ex('russian_twists', 4, '24', '30s'),
+        ['Stretching', '10 min']
+      ]),
+      tempoRun(10, 6, '5:00'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 9 km', 5, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 5, '5', '90s'),
+        ...ex('pushups', 5, '20', '60s'),
+        ...ex('rows_dumbbell', 4, '14 każda', '90s'),
+        ...ex('pushups_pike', 4, '10', '60s'),
+        ...ex('leg_raises_hanging', 4, '10', '60s'),
+        ['BIEG', ''],
+        ['Trucht', '1 km'],
+        ['Fartlek 8 km', '3 min @ 4:40/km, 90s @ 5:30/km'],
+      ]),
+      longRun(14, '5:30-5:40', 'Żel lub banan po 8 km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 4 — regeneracyjny
+  {
+    n: 4, totalKm: 43, intensity: 3, phase: 'p1',
+    note: 'Tydzień regeneracyjny — mniej objętości, ta sama intensywność. Ciało absorbuje 3 tyg. roboty.',
+    days: [
+      intervalRun('Interwały 400m × 8', 9, '400m', 8, '4:50', '90s'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B — lżejsza wersja', '50 min', 3, [
+        ['ROZGRZEWKA', '5 min jak zawsze'],
+        ['SCHODY', ''],
+        ['Plecak 5 kg', '8 minut tylko'],
+        ['SIŁA — mniej serii', ''],
+        ...ex('bulgarian_split_squats', 3, '10 każda', '90s'),
+        ...ex('box_jumps', 3, '8', '90s'),
+        ...ex('calf_raises_single', 3, '12 każda', '60s'),
+        ...ex('plank', 3, '40s', '30s'),
+        ...ex('hollow_body', 3, '25s', '30s'),
+        ['ZASADA', ''],
+        ['', 'NIE zwiększaj nic w tym tygodniu — to celowe roztrenowanie']
+      ]),
+      tempoRun(8, 4, '5:05'),
+      easyRun(7, '5:35'),
+      longRun(12, '5:35', 'Banan po 7 km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 5
+  {
+    n: 5, totalKm: 58, intensity: 5, phase: 'p1',
+    note: 'PEŁNY LONG 17 km — pierwszy raz. Wprowadzam interwały 1 km — najlepszy bodziec dla półmaratonisty.',
+    days: [
+      intervalRun('Interwały 1 km × 6 + siła', 12, '1 km', 6, '4:45', '2 min marsz'),
+      easyRun(8, '5:30'),
+      d(TYPES.S, 'Siła B + schody 18 min', '75 min', 5, [
+        ['ROZGRZEWKA', '5 min'],
+        ['SCHODY Z PLECAKIEM', ''],
+        ['Plecak', '10 kg — od teraz to standard'],
+        ['Czas', '18 minut'],
+        ['Technika', 'Klatka do góry, oddychaj rytmicznie. Co 1 min próbuj iść 10 sekund szybciej.'],
+        ['SIŁA NÓG + CORE', ''],
+        ...ex('bulgarian_split_squats', 5, '12 każda', '90s'),
+        ...ex('box_jumps', 5, '10', '90s'),
+        ...ex('calf_raises_single', 4, '20 każda', '60s'),
+        ...ex('plank', 4, '50s', '30s'),
+        ...ex('plank_side_dynamic', 3, '10 każda strona', '30s'),
+        ...ex('hollow_body', 4, '30s', '30s'),
+        ...ex('russian_twists', 4, '26', '30s')
+      ]),
+      tempoRun(11, 7, '5:00'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 10 km', 5, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 5, '6', '90s'),
+        ...ex('pushups', 5, '22', '60s'),
+        ...ex('rows_dumbbell', 4, '15 każda', '90s'),
+        ...ex('pushups_pike', 4, '10', '60s'),
+        ...ex('shoulder_press_dumbbell', 3, '10 każda', '60s'),
+        ...ex('leg_raises_hanging', 5, '10 (lub 8 prostych)', '60s'),
+        ['BIEG', ''],
+        ['Fartlek 10 km', '4 min @ 4:40/km, 2 min @ 5:30/km']
+      ]),
+      longRun(17, '5:30', 'Żel co 6 km od 8. km. PIERWSZY TAK DŁUGI BIEG.'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 6
+  {
+    n: 6, totalKm: 57, intensity: 4, phase: 'p1',
+    note: 'Coraz więcej interwałów 1 km. Long 15 km.',
+    days: [
+      intervalRun('Interwały 1 km × 7 + siła', 13, '1 km', 7, '4:42', '90s'),
+      easyRun(8, '5:25'),
+      d(TYPES.S, 'Siła B + schody 18 min', '75 min', 5, [
+        ['SCHODY', '18 min, 10 kg'],
+        ['SIŁA NÓG + CORE', ''],
+        ...ex('bulgarian_split_squats', 6, '12 każda', '90s'),
+        ...ex('box_jumps', 5, '12', '90s'),
+        ...ex('calf_raises_single', 5, '20 każda', '60s'),
+        ...ex('plank', 5, '50s', '30s'),
+        ...ex('mountain_climbers', 5, '35s', '30s'),
+        ...ex('hollow_body', 5, '30s', '30s')
+      ]),
+      tempoRun(12, 8, '5:00'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 9 km', 4, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 5, '6-7', '90s'),
+        ...ex('pushups', 5, '22', '60s'),
+        ...ex('rows_dumbbell', 4, '15 każda', '90s'),
+        ...ex('pushups_pike', 4, '10-12', '60s'),
+        ...ex('rows_inverted', 3, '12', '60s'),
+        ...ex('leg_raises_hanging', 5, '12', '60s'),
+        ['BIEG', ''],
+        ['Fartlek 9 km', '4 min @ 4:38/km, 2 min @ 5:25/km']
+      ]),
+      longRun(15, '5:25', 'Żel co 45 min'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 7 — koniec fazy 1
+  {
+    n: 7, totalKm: 41, intensity: 4, phase: 'p1',
+    note: 'Ostatni tydzień fazy 1. TEST 10 km na czas. Cel: poniżej 50 minut.',
+    days: [
+      intervalRun('Interwały 800m × 6 + siła', 10, '800m', 6, '4:45', '2 min'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B — lżejsza (przed testem)', '55 min', 3, [
+        ['SCHODY', '12 min, 8 kg — lżej żeby nogi były świeże'],
+        ['SIŁA — 3 serie zamiast 5', ''],
+        ...ex('bulgarian_split_squats', 3, '10 każda', '90s'),
+        ...ex('box_jumps', 3, '8', '90s'),
+        ...ex('plank', 3, '45s', '30s'),
+        ...ex('hollow_body', 3, '30s', '30s'),
+        ['CEL', 'Świeże nogi na sobotni test 10 km']
+      ]),
+      easyRun(7, '5:35'),
+      d(TYPES.L, 'Łatwy bieg + strides', '7 km', 1, [
+        ['Bieg', '6 km, 5:30/km'],
+        ['Strides', '5 × 100m'],
+        ['Cel', 'Świeże nogi na test']
+      ]),
+      d(TYPES.D, 'TEST 10 km na czas', '10 km', 5, [
+        ['PRZED TESTEM', ''],
+        ['Wieczór wcześniej', 'Dużo węglowodanów. Sen 9h.'],
+        ['Śniadanie 2.5h przed', 'Owsianka + banan + miód'],
+        ['ROZGRZEWKA', ''],
+        ['Trucht', '15 min @ 5:45/km'],
+        ['Strides', '4 × 100m'],
+        ['TEST', ''],
+        ['Dystans', '10 km na czas — DAJ Z SIEBIE WSZYSTKO'],
+        ['Strategia', 'Pierwsze 2 km kontrolnie @ 5:00/km, potem przyspieszaj'],
+        ['Cel', '< 50 min = jesteś na drodze do <1:50 półmaratonu'],
+        ['', '< 48 min = potencjał na <1:45'],
+        ['Po teście', '20 min stretching + zapisz wynik'],
+        ['ZAPISZ CZAS', 'Porównasz po fazie 2 (tydzień 15)']
+      ]),
+      recovery()
+    ]
+  },
+
+  // ============ FAZA 2: BUDOWA ============
+
+  // TYDZIEŃ 8
+  {
+    n: 8, totalKm: 63, intensity: 5, phase: 'p2',
+    note: 'Faza 2. Schody do 12 kg. Long do 17 km regularnie.',
+    days: [
+      intervalRun('Interwały 1 km × 8 + siła', 14, '1 km', 8, '4:42', '90s'),
+      easyRun(8, '5:25'),
+      d(TYPES.S, 'Siła B + schody 20 min z 12 kg', '80 min', 5, [
+        ['SCHODY Z 12 KG', '20 min — to jest twój podstawowy ciężar tatrzański'],
+        ['SIŁA NÓG + CORE', ''],
+        ...ex('bulgarian_split_squats_weighted', 5, '10 każda noga z hantlem 10kg', '90s'),
+        ...ex('box_jumps', 5, '12', '90s'),
+        ...ex('lunges', 4, '10 każda noga', '60s'),
+        ...ex('calf_raises_single', 5, '20 każda', '60s'),
+        ...ex('plank', 5, '50s', '30s'),
+        ...ex('plank_side', 4, '30s każda', '30s'),
+        ...ex('hollow_body', 5, '35s', '30s')
+      ]),
+      tempoRun(13, 9, '4:55'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 11 km', 5, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 6, '6-7', '90s'),
+        ...ex('pushups', 6, '22', '60s'),
+        ...ex('rows_dumbbell', 5, '15 każda', '90s'),
+        ...ex('pushups_pike', 5, '12', '60s'),
+        ...ex('shoulder_press_dumbbell', 4, '10 każda', '60s'),
+        ...ex('leg_raises_hanging', 5, '12-14', '60s'),
+        ...ex('plank', 4, '50s', '30s'),
+        ['BIEG', ''],
+        ['Fartlek 11 km', '4 min @ 4:35/km, 2 min @ 5:25/km']
+      ]),
+      longRun(17, '5:20', 'Żel 8., 13. km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 9
+  {
+    n: 9, totalKm: 65, intensity: 5, phase: 'p2',
+    note: 'Schody 22 min. Long 18 km. Coraz cięższe interwały — tempo schodzi do 4:40/km.',
+    days: [
+      intervalRun('Interwały 1 km × 9 + siła', 15, '1 km', 9, '4:40', '90s'),
+      easyRun(8, '5:25'),
+      d(TYPES.S, 'Siła B + schody 22 min z 12 kg', '85 min', 5, [
+        ['SCHODY Z 12 KG', '22 min'],
+        ['SIŁA', ''],
+        ...ex('bulgarian_split_squats_weighted', 6, '12 każda z hantlem', '90s'),
+        ...ex('box_jumps', 5, '12', '90s'),
+        ...ex('lunges', 4, '12 każda', '60s'),
+        ...ex('calf_raises_single', 5, '22 każda', '60s'),
+        ...ex('plank', 5, '60s', '30s'),
+        ...ex('plank_side_dynamic', 4, '12 każda', '30s'),
+        ...ex('russian_twists', 5, '28', '30s'),
+        ...ex('hollow_body', 5, '40s', '30s')
+      ]),
+      tempoRun(14, 10, '4:55'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 10 km', 5, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 6, '7', '90s'),
+        ...ex('pushups', 6, '24', '60s'),
+        ...ex('rows_dumbbell', 5, '16 każda', '90s'),
+        ...ex('pushups_diamond', 4, '10', '60s'),
+        ...ex('shoulder_press_dumbbell', 4, '12 każda', '60s'),
+        ...ex('leg_raises_hanging', 5, '14', '60s'),
+        ['BIEG', ''],
+        ['Fartlek 10 km', '4 min @ 4:35/km, 2 min @ 5:25/km']
+      ]),
+      longRun(18, '5:20', 'Żel 8., 13., 16. km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 10 — regeneracyjny
+  {
+    n: 10, totalKm: 48, intensity: 3, phase: 'p2',
+    note: 'Regeneracja po dwóch ciężkich tygodniach.',
+    days: [
+      intervalRun('Interwały 800m × 6', 11, '800m', 6, '4:45', '2 min'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B lżej', '60 min', 3, [
+        ['SCHODY', '12 min, 10 kg'],
+        ['SIŁA — 3 serie każdego', ''],
+        ...ex('bulgarian_split_squats', 3, '10 każda', '90s'),
+        ...ex('box_jumps', 3, '10', '90s'),
+        ...ex('plank', 3, '50s', '30s'),
+        ...ex('hollow_body', 3, '35s', '30s'),
+        ...ex('russian_twists', 3, '24', '30s')
+      ]),
+      tempoRun(9, 6, '5:00'),
+      easyRun(7, '5:30'),
+      longRun(14, '5:25', 'Żel po 8 km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 11
+  {
+    n: 11, totalKm: 70, intensity: 5, phase: 'p2',
+    note: 'Long do 19 km. Po tym tygodniu jesteś biegaczem długodystansowym.',
+    days: [
+      intervalRun('Interwały 1 km × 10 + siła', 16, '1 km', 10, '4:38', '90s'),
+      easyRun(8, '5:25'),
+      d(TYPES.S, 'Siła B + schody 25 min z 12 kg', '90 min', 5, [
+        ['SCHODY Z 12 KG', '25 min'],
+        ['SIŁA', ''],
+        ...ex('bulgarian_split_squats_weighted', 6, '14 każda z hantlem', '90s'),
+        ...ex('box_jumps', 6, '12', '90s'),
+        ...ex('lunges', 5, '12 każda', '60s'),
+        ...ex('calf_raises_single', 5, '22 każda', '60s'),
+        ...ex('plank', 5, '60s', '30s'),
+        ...ex('plank_side_dynamic', 5, '12 każda', '30s'),
+        ...ex('russian_twists', 5, '28', '30s'),
+        ...ex('hollow_body', 5, '50s', '30s')
+      ]),
+      tempoRun(15, 11, '4:55'),
+      d(TYPES.X, 'Siła A + fartlek szczytowy', 'siła + 12 km', 5, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 7, '7', '90s'),
+        ...ex('pushups', 6, '25', '60s'),
+        ...ex('rows_dumbbell', 5, '16 każda', '90s'),
+        ...ex('pushups_diamond', 5, '12', '60s'),
+        ...ex('shoulder_press_dumbbell', 4, '12 każda', '60s'),
+        ...ex('leg_raises_hanging', 5, '15', '60s'),
+        ...ex('plank', 4, '70s', '30s'),
+        ['BIEG', ''],
+        ['Fartlek 12 km', '4 min @ 4:30/km, 2 min @ 5:20/km']
+      ]),
+      longRun(19, '5:20', 'Żel 8., 13., 17. km. 19 km to PSYCHOLOGICZNY próg.'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 12
+  {
+    n: 12, totalKm: 70, intensity: 5, phase: 'p2',
+    note: 'PIERWSZY 20 km. To psychologiczna granica — przekraczasz ją.',
+    days: [
+      intervalRun('Interwały 1 km × 10 + siła', 16, '1 km', 10, '4:38', '90s'),
+      easyRun(8, '5:20'),
+      d(TYPES.S, 'Siła B + schody 25 min z 15 kg', '90 min', 5, [
+        ['SCHODY Z 15 KG', '25 min — szczyt obciążenia'],
+        ['SIŁA', ''],
+        ...ex('bulgarian_split_squats_weighted', 7, '14 każda', '90s'),
+        ...ex('box_jumps', 6, '12', '90s'),
+        ...ex('lunges', 5, '12 każda', '60s'),
+        ...ex('calf_raises_single', 5, '25 każda', '60s'),
+        ...ex('plank', 5, '60s', '30s'),
+        ...ex('plank_side_dynamic', 5, '12 każda', '30s'),
+        ...ex('russian_twists', 5, '28', '30s'),
+        ...ex('hollow_body', 5, '50s', '30s')
+      ]),
+      tempoRun(15, 11, '4:53'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 11 km', 5, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 7, '7', '90s'),
+        ...ex('pushups', 6, '25', '60s'),
+        ...ex('rows_dumbbell', 5, '16 każda', '90s'),
+        ...ex('pushups_diamond', 5, '12', '60s'),
+        ...ex('shoulder_press_dumbbell', 5, '12 każda', '60s'),
+        ...ex('leg_raises_hanging', 5, '15', '60s'),
+        ['BIEG', ''],
+        ['Fartlek 11 km', '4 min @ 4:30/km, 2 min @ 5:20/km']
+      ]),
+      longRun(20, '5:20', 'Żel 8., 13., 17. km. PIERWSZE 20 KM!'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 13 — regeneracyjny
+  {
+    n: 13, totalKm: 50, intensity: 3, phase: 'p2',
+    note: 'Regeneracja. Long 14 km tylko.',
+    days: [
+      intervalRun('Interwały 1 km × 6', 12, '1 km', 6, '4:42', '2 min'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B lżej', '60 min', 3, [
+        ['SCHODY', '15 min, 10 kg'],
+        ['SIŁA — 3 serie', ''],
+        ...ex('bulgarian_split_squats', 3, '12 każda', '90s'),
+        ...ex('box_jumps', 3, '10', '90s'),
+        ...ex('plank', 3, '50s', '30s'),
+        ...ex('hollow_body', 3, '40s', '30s'),
+        ...ex('russian_twists', 3, '26', '30s')
+      ]),
+      tempoRun(10, 7, '5:00'),
+      easyRun(7, '5:30'),
+      longRun(14, '5:25', 'Żel po 8 km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 14
+  {
+    n: 14, totalKm: 73, intensity: 5, phase: 'p2',
+    note: 'Najtrudniejszy tydzień fazy 2. Long 21 km — symulacja półmaratonu w treningu.',
+    days: [
+      d(TYPES.I, 'Interwały mieszane + siła', '17 km + siła', 5, [
+        ['ROZGRZEWKA', ''],
+        ['Trucht', '2 km @ 5:45/km'],
+        ['Strides', '4 × 100m'],
+        ['INTERWAŁY MIESZANE', ''],
+        ['Seria 1', '6 × 1 km @ 4:35/km, odp. 75s'],
+        ['Pauza między seriami', '3 min trucht @ 6:00/km'],
+        ['Seria 2', '5 × 400m @ 4:25/km, odp. 60s'],
+        ['Chłodzenie', '2 km trucht'],
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 7, '7', '90s'),
+        ...ex('pushups', 6, '25', '60s'),
+        ...ex('rows_dumbbell', 5, '16 każda', '90s'),
+        ...ex('pushups_diamond', 5, '12', '60s'),
+        ...ex('leg_raises_hanging', 5, '15', '60s')
+      ]),
+      easyRun(8, '5:20'),
+      d(TYPES.S, 'Siła B + schody 28 min z 15 kg', '95 min', 5, [
+        ['SCHODY 15 KG', '28 min'],
+        ['SIŁA', ''],
+        ...ex('bulgarian_split_squats_weighted', 7, '14 każda', '90s'),
+        ...ex('box_jumps', 6, '14', '90s'),
+        ...ex('lunges', 5, '12 każda', '60s'),
+        ...ex('calf_raises_single', 5, '25 każda', '60s'),
+        ...ex('plank', 5, '70s', '30s'),
+        ...ex('plank_side_dynamic', 5, '14 każda', '30s'),
+        ...ex('russian_twists', 5, '30', '30s'),
+        ...ex('hollow_body', 5, '50s', '30s')
+      ]),
+      tempoRun(16, 12, '4:53'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 11 km', 5, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 7, '7', '90s'),
+        ...ex('pushups', 6, '25', '60s'),
+        ...ex('rows_dumbbell', 5, '17 każda', '90s'),
+        ...ex('pushups_diamond', 5, '13', '60s'),
+        ...ex('shoulder_press_dumbbell', 4, '12 każda', '60s'),
+        ...ex('leg_raises_hanging', 5, '15', '60s'),
+        ['BIEG', ''],
+        ['Fartlek 11 km', '4 min @ 4:28/km, 2 min @ 5:18/km']
+      ]),
+      longRun(21, '5:15', 'Żel 8., 13., 17. km. SYMULACJA PÓŁMARATONU. Cel czasowy ~1:50.'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 15
+  {
+    n: 15, totalKm: 47, intensity: 3, phase: 'p2',
+    note: 'Pre-półmaraton roztrenowanie. TEST 10 km — porównaj z tyg. 7.',
+    days: [
+      intervalRun('Interwały 1 km × 6', 12, '1 km', 6, '4:35', '90s'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B utrzymanie', '65 min', 3, [
+        ['SCHODY', '15 min, 12 kg'],
+        ['SIŁA — 4 serie', ''],
+        ...ex('bulgarian_split_squats_weighted', 4, '12 każda', '90s'),
+        ...ex('box_jumps', 4, '10', '90s'),
+        ...ex('plank', 4, '60s', '30s'),
+        ...ex('hollow_body', 4, '40s', '30s')
+      ]),
+      tempoRun(11, 8, '4:55'),
+      d(TYPES.L, 'Łatwy bieg + strides', '7 km', 1, [
+        ['Bieg', '6 km, 5:30/km'],
+        ['Strides', '5 × 100m']
+      ]),
+      d(TYPES.D, 'TEST 10 km na czas', '10 km', 5, [
+        ['Test', '10 km — porównaj z tyg. 7'],
+        ['Cel', 'Min. 1.5 min szybciej niż wynik z tyg. 7'],
+        ['Tempo docelowe', '4:45-4:50/km'],
+        ['Po teście', 'ZAPISZ czas — to twoje benchmark wejściowe do fazy 3']
+      ]),
+      recovery()
+    ]
+  },
+
+  // ============ FAZA 3: PÓŁMARATON ============
+
+  // TYDZIEŃ 16
+  {
+    n: 16, totalKm: 76, intensity: 5, phase: 'p3',
+    note: 'Faza 3. Cel półmaratonu: 1:45. Long do 22 km.',
+    days: [
+      d(TYPES.I, 'Interwały mieszane szczytowe', '17 km + siła', 5, [
+        ['Rozgrzewka', '2 km trucht + strides'],
+        ['Seria 1', '7 × 1 km @ 4:33/km, odp. 75s'],
+        ['Pauza', '3 min trucht'],
+        ['Seria 2', '6 × 400m @ 4:20/km, odp. 60s'],
+        ['Chłodzenie', '2 km'],
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 7, '8', '90s'),
+        ...ex('pushups', 7, '25', '60s'),
+        ...ex('rows_dumbbell', 5, '17 każda', '90s'),
+        ...ex('pushups_diamond', 5, '13', '60s'),
+        ...ex('leg_raises_hanging', 5, '15', '60s')
+      ]),
+      easyRun(9, '5:20'),
+      d(TYPES.S, 'Siła B + schody 30 min z 15 kg', '95 min', 5, [
+        ['SCHODY 15 KG', '30 min — szczyt'],
+        ['SIŁA', ''],
+        ...ex('bulgarian_split_squats_weighted', 7, '14 każda', '90s'),
+        ...ex('box_jumps', 7, '14', '90s'),
+        ...ex('lunges', 5, '12 każda', '60s'),
+        ...ex('calf_raises_single', 6, '25 każda', '60s'),
+        ...ex('plank', 6, '70s', '30s'),
+        ...ex('plank_side_dynamic', 6, '14 każda', '30s'),
+        ...ex('russian_twists', 6, '30', '30s'),
+        ...ex('hollow_body', 6, '50s', '30s')
+      ]),
+      tempoRun(17, 13, '4:50'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 12 km', 5, [
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 7, '8', '90s'),
+        ...ex('pushups', 7, '25', '60s'),
+        ...ex('rows_dumbbell', 5, '17 każda', '90s'),
+        ...ex('pushups_diamond', 5, '13', '60s'),
+        ...ex('shoulder_press_dumbbell', 5, '12 każda', '60s'),
+        ...ex('leg_raises_hanging', 5, '15', '60s'),
+        ['BIEG', ''],
+        ['Fartlek 12 km', '4 min @ 4:25/km, 2 min @ 5:15/km']
+      ]),
+      longRun(21, '5:15', 'Żel 8., 13., 17. km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 17
+  {
+    n: 17, totalKm: 77, intensity: 5, phase: 'p3',
+    note: 'MAKSYMALNY LONG 22 km — to twój top przed półmaratonem.',
+    days: [
+      intervalRun('Interwały 1 km × 10 + siła', 16, '1 km', 10, '4:30', '75s'),
+      easyRun(9, '5:20'),
+      d(TYPES.S, 'Siła B + schody 30 min z 15 kg', '95 min', 5, [
+        ['SCHODY 15 KG', '30 min'],
+        ['SIŁA — pełna z tyg. 16', ''],
+        ...ex('bulgarian_split_squats_weighted', 7, '14 każda', '90s'),
+        ...ex('box_jumps', 7, '14', '90s'),
+        ...ex('lunges', 5, '12 każda', '60s'),
+        ...ex('calf_raises_single', 6, '25 każda', '60s'),
+        ...ex('plank', 6, '70s', '30s'),
+        ...ex('hollow_body', 6, '50s', '30s')
+      ]),
+      tempoRun(18, 14, '4:48'),
+      d(TYPES.X, 'Siła A + fartlek', 'siła + 12 km', 5, [
+        ['SIŁA GÓRNA — pełna', ''],
+        ...ex('pullups', 7, '8', '90s'),
+        ...ex('pushups', 7, '25', '60s'),
+        ...ex('rows_dumbbell', 5, '18 każda', '90s'),
+        ...ex('pushups_diamond', 5, '14', '60s'),
+        ...ex('leg_raises_hanging', 5, '15', '60s'),
+        ['BIEG', ''],
+        ['Fartlek 12 km', '4 min @ 4:23/km, 2 min @ 5:12/km']
+      ]),
+      longRun(22, '5:10', 'Żel 8., 13., 18. km + elektrolity. SZCZYT TWOJEGO LONG RUN.'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 18 — pre-półmaraton roztrenowanie
+  {
+    n: 18, totalKm: 55, intensity: 3, phase: 'p3',
+    note: 'Roztrenowanie przed półmaratonem. Mniej objętości, ta sama intensywność.',
+    days: [
+      intervalRun('Interwały 1 km × 6', 12, '1 km', 6, '4:35', '90s'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B lżej', '60 min', 3, [
+        ['SCHODY', '12 min, 10 kg'],
+        ['SIŁA — 3 serie', ''],
+        ...ex('bulgarian_split_squats', 3, '12 każda', '90s'),
+        ...ex('box_jumps', 3, '10', '90s'),
+        ...ex('plank', 3, '60s', '30s'),
+        ...ex('hollow_body', 3, '45s', '30s')
+      ]),
+      tempoRun(12, 9, '4:55'),
+      d(TYPES.L, 'Łatwy bieg + strides', '7 km', 1, [
+        ['Bieg', '6 km, 5:30/km'],
+        ['Strides', '6 × 100m']
+      ]),
+      longRun(17, '5:15', 'Żel po 8 km. Komfortowo, świeże nogi na półmaraton.'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 19 — TYDZIEŃ PÓŁMARATONU
+  {
+    n: 19, totalKm: 40, intensity: 5, phase: 'p3',
+    note: 'TYDZIEŃ PÓŁMARATONU. Sobota = start. Cel: 1:45 (5:00/km).',
+    days: [
+      d(TYPES.I, 'Lekkie interwały aktywizujące', '8 km', 2, [
+        ['Rozgrzewka', '1.5 km trucht'],
+        ['6 × 400m @ 4:30/km', 'odp. 90s — przypomnienie tempa, nie rozbicie się'],
+        ['Chłodzenie', '1.5 km'],
+        ['BEZ SIŁY', 'Tapering — żadnego siłowego do soboty']
+      ]),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła A — minimalna aktywizacja', '30 min', 2, [
+        ['ZASADA', '2 serie każdego, lekko — utrzymanie układu nerwowego'],
+        ...ex('pullups', 2, '4', '90s'),
+        ...ex('pushups', 2, '15', '60s'),
+        ...ex('plank', 2, '40s', '30s'),
+        ['BEZ schodów', 'Świeże nogi'],
+        ['BEZ obciążenia hantlem', 'Tylko aktywizacja']
+      ]),
+      d(TYPES.L, 'Mini bieg + strides', '4 km', 1, [
+        ['Bieg', '3 km, 5:20/km'],
+        ['Strides', '5 × 100m'],
+        ['Cel', 'Świeże nogi']
+      ]),
+      recovery(),
+      d(TYPES.D, 'PÓŁMARATON 21.1 km', '21 km', 5, [
+        ['DZIEŃ STARTU', ''],
+        ['Pobudka', '3h przed startem'],
+        ['Śniadanie', 'Owsianka + banan + miód, 2.5h przed'],
+        ['ROZGRZEWKA', ''],
+        ['Trucht', '10 min @ 5:45/km na 30 min przed'],
+        ['Strides', '4 × 100m'],
+        ['STRATEGIA', ''],
+        ['0-7 km', '5:05/km — kontrolnie. NIE wystrzeliwuj się na początku.'],
+        ['7-15 km', '5:00/km — komfortowo, w rytmie'],
+        ['15-21 km', '4:55/km — daj wszystko'],
+        ['Żywienie', 'Żel co 5 km + woda na każdym punkcie'],
+        ['CEL CZASOWY', '1:45 (średnia 5:00/km)']
+      ]),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 20 — po-półmaraton
+  {
+    n: 20, totalKm: 27, intensity: 1, phase: 'p3',
+    note: 'Regeneracja po półmaratonie. Bardzo lekko cały tydzień.',
+    days: [
+      recovery(),
+      easyRun(7, '5:50'),
+      recovery(),
+      easyRun(7, '5:40'),
+      recovery(),
+      longRun(13, '5:35', 'Banan po 7 km'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 21
+  {
+    n: 21, totalKm: 43, intensity: 3, phase: 'p3',
+    note: 'Restart treningu — fokus przesuwa się na Tatry. Pierwsze marsze górskie z plecakiem.',
+    days: [
+      d(TYPES.S, 'Siła A pełna powrót', '65 min', 4, [
+        ['ROZGRZEWKA', '5 min jak zawsze'],
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 5, '6', '90s'),
+        ...ex('pushups', 5, '22', '60s'),
+        ...ex('rows_dumbbell', 4, '15 każda', '90s'),
+        ...ex('pushups_pike', 4, '12', '60s'),
+        ...ex('leg_raises_hanging', 4, '12', '60s'),
+        ...ex('plank', 4, '60s', '30s')
+      ]),
+      easyRun(8, '5:25'),
+      d(TYPES.S, 'Siła B + schody 22 min z 12 kg', '85 min', 5, [
+        ['SCHODY', '22 min, 12 kg'],
+        ['SIŁA', ''],
+        ...ex('bulgarian_split_squats_weighted', 5, '12 każda', '90s'),
+        ...ex('box_jumps', 5, '12', '90s'),
+        ...ex('lunges', 5, '12 każda', '60s'),
+        ...ex('calf_raises_single', 5, '20 każda', '60s'),
+        ...ex('plank', 5, '60s', '30s'),
+        ...ex('plank_side_dynamic', 4, '12 każda', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski z plecakiem', '9 km', 3, [
+        ['CEL', 'Symulacja podejścia tatrzańskiego'],
+        ['Plecak', '12 kg (woda + książki/butelki)'],
+        ['Czas', '75 minut'],
+        ['Tempo', 'Żwawy marsz, 5-6 km/h'],
+        ['Teren', 'Nierówny — park, las, podjazdy. Schody jeśli masz w okolicy.'],
+        ['Co robić', 'Idź jakbyś szedł na Rysy. Klatka do góry. Co 20 min — łyk wody.'],
+        ['Kije', 'Jeśli masz kije do nordic walking — używaj. Symulacja kijków.'],
+        ['Po marszu', '5 min stretching łydek']
+      ]),
+      tempoRun(11, 8, '4:55'),
+      longRun(15, '5:25', 'Tylko teren naturalny — nierówny'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 22
+  {
+    n: 22, totalKm: 63, intensity: 4, phase: 'p3',
+    note: 'Fokus tatrzański. Schody 25 min, marsz górski 80 min.',
+    days: [
+      intervalRun('Interwały 1 km × 8 + siła', 14, '1 km', 8, '4:30', '90s'),
+      easyRun(8, '5:20'),
+      d(TYPES.S, 'Siła B + schody 25 min z 15 kg', '90 min', 5, [
+        ['SCHODY', '25 min, 15 kg'],
+        ['SIŁA', ''],
+        ...ex('bulgarian_split_squats_weighted', 6, '14 każda', '90s'),
+        ...ex('box_jumps', 5, '12', '90s'),
+        ...ex('lunges', 5, '12 każda', '60s'),
+        ...ex('calf_raises_single', 5, '22 każda', '60s'),
+        ...ex('plank', 5, '70s', '30s'),
+        ...ex('plank_side_dynamic', 5, '12 każda', '30s'),
+        ...ex('hollow_body', 5, '50s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 80 min z 15 kg', '10 km', 4, [
+        ['Plecak', '15 kg'],
+        ['Czas', '80 minut'],
+        ['Tempo', 'Mocniejsze niż tydzień 21 — szukaj podjazdów'],
+        ['Teren', 'Nierówny + podjazdy obowiązkowo'],
+        ['Co robić', 'Zwracaj uwagę na technikę chodzenia w górę: krótkie kroki, nogi z bioder, oddech rytmiczny.'],
+        ['Co 30 min', 'Łyk wody, sprawdź plecak, czy nie obciera']
+      ]),
+      tempoRun(14, 10, '4:50'),
+      longRun(17, '5:15', 'Teren naturalny, szukaj wzgórz'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 23
+  {
+    n: 23, totalKm: 68, intensity: 5, phase: 'p3',
+    note: 'Szczyt fazy 3. Schody 30 min. Nogi mają być stalowe.',
+    days: [
+      d(TYPES.I, 'Interwały mieszane', '15 km + siła', 5, [
+        ['Rozgrzewka', '2 km'],
+        ['Seria 1', '6 × 1 km @ 4:28/km, odp. 75s'],
+        ['Pauza', '3 min trucht'],
+        ['Seria 2', '6 × 400m @ 4:18/km, odp. 60s'],
+        ['Chłodzenie', '2 km'],
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 7, '8', '90s'),
+        ...ex('pushups', 7, '25', '60s'),
+        ...ex('rows_dumbbell', 5, '18 każda', '90s'),
+        ...ex('pushups_diamond', 5, '14', '60s'),
+        ...ex('leg_raises_hanging', 5, '15', '60s')
+      ]),
+      easyRun(8, '5:20'),
+      d(TYPES.S, 'Siła B + schody 30 min z 15 kg', '100 min', 5, [
+        ['SCHODY 15 KG', '30 min — szczyt całego planu'],
+        ['SIŁA', ''],
+        ...ex('bulgarian_split_squats_weighted', 7, '14 każda', '90s'),
+        ...ex('box_jumps', 6, '14', '90s'),
+        ...ex('lunges', 6, '14 każda', '60s'),
+        ...ex('calf_raises_single', 6, '25 każda', '60s'),
+        ...ex('plank', 6, '70s', '30s'),
+        ...ex('plank_side_dynamic', 6, '14 każda', '30s'),
+        ...ex('russian_twists', 6, '30', '30s'),
+        ...ex('hollow_body', 6, '60s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 90 min z 15 kg', '11 km', 4, [
+        ['Plecak', '15 kg'],
+        ['Czas', '90 minut'],
+        ['Teren', 'Najbardziej nierówny jaki znajdziesz'],
+        ['Tempo', 'Żwawy marsz przez cały czas'],
+        ['Co 30 min', 'Krótka pauza, woda, sprawdź buty/plecak']
+      ]),
+      tempoRun(16, 12, '4:48'),
+      longRun(18, '5:15', 'Nierówny teren + podjazdy'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 24
+  {
+    n: 24, totalKm: 52, intensity: 3, phase: 'p3',
+    note: 'Regeneracja przed fazą 4.',
+    days: [
+      intervalRun('Interwały 1 km × 6', 12, '1 km', 6, '4:30', '2 min'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B + schody 18 min', '75 min', 4, [
+        ['SCHODY', '18 min, 12 kg'],
+        ['SIŁA — 4 serie', ''],
+        ...ex('bulgarian_split_squats_weighted', 4, '12 każda', '90s'),
+        ...ex('box_jumps', 4, '10', '90s'),
+        ...ex('plank', 4, '60s', '30s'),
+        ...ex('hollow_body', 4, '45s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 60 min z 12 kg', '7 km', 3, [
+        ['Plecak', '12 kg, 60 min'],
+        ['Teren', 'Nierówny']
+      ]),
+      tempoRun(11, 8, '4:55'),
+      longRun(15, '5:20'),
+      recovery()
+    ]
+  },
+
+  // ============ FAZA 4: TATRY ============
+
+  // TYDZIEŃ 25
+  {
+    n: 25, totalKm: 68, intensity: 5, phase: 'p4',
+    note: 'Faza 4 — pełen fokus na Tatry. Maksymalna kondycja górska.',
+    days: [
+      intervalRun('Interwały 1 km × 9 + siła', 15, '1 km', 9, '4:25', '75s'),
+      easyRun(9, '5:20'),
+      d(TYPES.S, 'Siła B + schody 30 min z 15 kg', '95 min', 5, [
+        ['SCHODY 15 KG', '30 min'],
+        ['SIŁA — pełna', ''],
+        ...ex('bulgarian_split_squats_weighted', 7, '14 każda', '90s'),
+        ...ex('box_jumps', 7, '14', '90s'),
+        ...ex('lunges', 6, '14 każda', '60s'),
+        ...ex('calf_raises_single', 6, '25 każda', '60s'),
+        ...ex('plank', 6, '70s', '30s'),
+        ...ex('plank_side_dynamic', 6, '14 każda', '30s'),
+        ...ex('hollow_body', 6, '60s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 90 min z 15 kg', '11 km', 4, [
+        ['Plecak', '15 kg, 90 min'],
+        ['Teren', 'Nierówny + podjazdy'],
+        ['Cel', 'Twoje nogi mają być przyzwyczajone do TYCH OBCIĄŻEŃ na 100%']
+      ]),
+      tempoRun(15, 11, '4:45'),
+      longRun(18, '5:10', 'Nierówny teren — symulacja Tatr'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 26
+  {
+    n: 26, totalKm: 72, intensity: 5, phase: 'p4',
+    note: 'Coraz cięższe schody i marsze. Szczyt formy górskiej.',
+    days: [
+      d(TYPES.I, 'Interwały mieszane szczytowe', '16 km + siła', 5, [
+        ['Rozgrzewka', '2 km'],
+        ['Seria 1', '7 × 1 km @ 4:23/km, odp. 75s'],
+        ['Pauza', '3 min trucht'],
+        ['Seria 2', '6 × 400m @ 4:15/km, odp. 60s'],
+        ['Chłodzenie', '2 km'],
+        ['SIŁA GÓRNA', ''],
+        ...ex('pullups', 7, '8-9', '90s'),
+        ...ex('pushups', 7, '27', '60s'),
+        ...ex('rows_dumbbell', 5, '18 każda', '90s'),
+        ...ex('pushups_diamond', 5, '15', '60s'),
+        ...ex('leg_raises_hanging', 5, '15-18', '60s')
+      ]),
+      easyRun(9, '5:20'),
+      d(TYPES.S, 'Siła B + schody 32 min z 15 kg', '100 min', 5, [
+        ['SCHODY 15 KG', '32 min — nowy szczyt'],
+        ['SIŁA', ''],
+        ...ex('bulgarian_split_squats_weighted', 7, '14 każda', '90s'),
+        ...ex('box_jumps', 7, '14', '90s'),
+        ...ex('lunges', 6, '14 każda', '60s'),
+        ...ex('calf_raises_single', 6, '25 każda', '60s'),
+        ...ex('plank', 6, '80s', '30s'),
+        ...ex('plank_side_dynamic', 6, '15 każda', '30s'),
+        ...ex('hollow_body', 6, '60s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 100 min z 15 kg', '12 km', 4, [
+        ['Plecak', '15 kg, 100 min'],
+        ['Teren', 'Z podjazdami obowiązkowo']
+      ]),
+      tempoRun(16, 12, '4:43'),
+      longRun(19, '5:10', 'Nierówny teren'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 27 — regeneracyjny
+  {
+    n: 27, totalKm: 53, intensity: 3, phase: 'p4',
+    note: 'Regeneracja w fazie 4. Odpoczywaj — to nie zniszczy formy.',
+    days: [
+      intervalRun('Interwały 1 km × 6', 12, '1 km', 6, '4:30', '90s'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B + schody 18 min', '75 min', 4, [
+        ['SCHODY', '18 min, 12 kg'],
+        ['SIŁA — 4 serie', ''],
+        ...ex('bulgarian_split_squats_weighted', 4, '12 każda', '90s'),
+        ...ex('box_jumps', 4, '10', '90s'),
+        ...ex('plank', 4, '60s', '30s'),
+        ...ex('hollow_body', 4, '45s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 60 min', '7 km', 2, [
+        ['Plecak', '10 kg, 60 min']
+      ]),
+      tempoRun(11, 8, '4:55'),
+      longRun(16, '5:15'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 28
+  {
+    n: 28, totalKm: 73, intensity: 5, phase: 'p4',
+    note: 'Maksymalna objętość. Po tym tygodniu zaczynasz redukować.',
+    days: [
+      intervalRun('Interwały 1 km × 10 + siła', 17, '1 km', 10, '4:25', '75s'),
+      easyRun(9, '5:15'),
+      d(TYPES.S, 'Siła B + schody 32 min z 15 kg', '100 min', 5, [
+        ['SCHODY', '32 min, 15 kg'],
+        ['SIŁA — pełna z tyg. 26', ''],
+        ...ex('bulgarian_split_squats_weighted', 7, '14 każda', '90s'),
+        ...ex('box_jumps', 7, '14', '90s'),
+        ...ex('lunges', 6, '14 każda', '60s'),
+        ...ex('calf_raises_single', 6, '25 każda', '60s'),
+        ...ex('plank', 6, '80s', '30s'),
+        ...ex('hollow_body', 6, '60s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 110 min z 15 kg', '13 km', 5, [
+        ['Plecak', '15 kg, 110 min'],
+        ['Teren', 'Maksymalnie nierówny']
+      ]),
+      tempoRun(17, 13, '4:43'),
+      longRun(17, '5:10'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 29
+  {
+    n: 29, totalKm: 70, intensity: 5, phase: 'p4',
+    note: 'Drugi tydzień szczytu. Po nim zaczynasz delikatne roztrenowanie.',
+    days: [
+      d(TYPES.I, 'Interwały mieszane', '17 km + siła', 5, [
+        ['Rozgrzewka', '2 km'],
+        ['Seria 1', '8 × 1 km @ 4:25/km, odp. 75s'],
+        ['Pauza', '3 min trucht'],
+        ['Seria 2', '5 × 400m @ 4:15/km, odp. 60s'],
+        ['Chłodzenie', '2 km'],
+        ['SIŁA GÓRNA — pełna', ''],
+        ...ex('pullups', 7, '9', '90s'),
+        ...ex('pushups', 7, '27', '60s'),
+        ...ex('rows_dumbbell', 5, '18 każda', '90s'),
+        ...ex('pushups_diamond', 5, '15', '60s'),
+        ...ex('leg_raises_hanging', 5, '18', '60s')
+      ]),
+      easyRun(9, '5:20'),
+      d(TYPES.S, 'Siła B + schody 30 min z 15 kg', '95 min', 5, [
+        ['SCHODY', '30 min, 15 kg'],
+        ['SIŁA pełna', ''],
+        ...ex('bulgarian_split_squats_weighted', 7, '14 każda', '90s'),
+        ...ex('box_jumps', 7, '14', '90s'),
+        ...ex('calf_raises_single', 6, '25 każda', '60s'),
+        ...ex('plank', 6, '80s', '30s'),
+        ...ex('hollow_body', 6, '60s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 100 min z 15 kg', '12 km', 4, [
+        ['Plecak', '15 kg, 100 min']
+      ]),
+      tempoRun(15, 11, '4:43'),
+      longRun(17, '5:10'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 30
+  {
+    n: 30, totalKm: 62, intensity: 4, phase: 'p4',
+    note: 'Pierwsze redukcje. Utrzymujesz intensywność, redukujesz objętość.',
+    days: [
+      intervalRun('Interwały 1 km × 8', 14, '1 km', 8, '4:28', '90s'),
+      easyRun(8, '5:25'),
+      d(TYPES.S, 'Siła B + schody 25 min z 15 kg', '90 min', 4, [
+        ['SCHODY', '25 min, 15 kg'],
+        ['SIŁA — 5 serii', ''],
+        ...ex('bulgarian_split_squats_weighted', 5, '14 każda', '90s'),
+        ...ex('box_jumps', 5, '12', '90s'),
+        ...ex('lunges', 5, '12 każda', '60s'),
+        ...ex('calf_raises_single', 5, '25 każda', '60s'),
+        ...ex('plank', 5, '70s', '30s'),
+        ...ex('hollow_body', 5, '50s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 90 min z 15 kg', '11 km', 4, [
+        ['Plecak', '15 kg, 90 min']
+      ]),
+      tempoRun(14, 10, '4:45'),
+      longRun(15, '5:15'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 31
+  {
+    n: 31, totalKm: 54, intensity: 4, phase: 'p4',
+    note: '4 tygodnie do Tatr. Kondycja zbudowana — teraz utrzymanie.',
+    days: [
+      intervalRun('Interwały 1 km × 7', 12, '1 km', 7, '4:30', '90s'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B + schody 22 min z 15 kg', '80 min', 4, [
+        ['SCHODY', '22 min, 15 kg'],
+        ['SIŁA — 4 serie', ''],
+        ...ex('bulgarian_split_squats_weighted', 4, '12 każda', '90s'),
+        ...ex('box_jumps', 4, '10', '90s'),
+        ...ex('lunges', 4, '10 każda', '60s'),
+        ...ex('plank', 4, '60s', '30s'),
+        ...ex('hollow_body', 4, '50s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 80 min z 12 kg', '10 km', 3, [
+        ['Plecak', '12 kg, 80 min']
+      ]),
+      tempoRun(11, 8, '4:50'),
+      longRun(14, '5:20'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 32
+  {
+    n: 32, totalKm: 48, intensity: 3, phase: 'p4',
+    note: 'Trzecia faza redukcji. Świeże nogi to dobry znak.',
+    days: [
+      intervalRun('Interwały 1 km × 6', 11, '1 km', 6, '4:30', '90s'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B + schody 18 min z 12 kg', '70 min', 3, [
+        ['SCHODY', '18 min, 12 kg'],
+        ['SIŁA — 3 serie', ''],
+        ...ex('bulgarian_split_squats', 3, '12 każda', '90s'),
+        ...ex('box_jumps', 3, '10', '90s'),
+        ...ex('plank', 3, '60s', '30s'),
+        ...ex('hollow_body', 3, '45s', '30s')
+      ]),
+      d(TYPES.M, 'Marsz górski 60 min z 10 kg', '8 km', 2, [
+        ['Plecak', '10 kg, 60 min']
+      ]),
+      tempoRun(9, 6, '4:55'),
+      longRun(13, '5:20'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 33
+  {
+    n: 33, totalKm: 43, intensity: 3, phase: 'p4',
+    note: 'Tapering. Mniej objętości, lekka intensywność.',
+    days: [
+      intervalRun('Interwały 800m × 5', 9, '800m', 5, '4:30', '90s'),
+      easyRun(7, '5:30'),
+      d(TYPES.S, 'Siła B + schody 15 min', '60 min', 3, [
+        ['SCHODY', '15 min, 10 kg'],
+        ['SIŁA — 3 serie', ''],
+        ...ex('bulgarian_split_squats', 3, '10 każda', '90s'),
+        ...ex('box_jumps', 3, '8', '90s'),
+        ...ex('plank', 3, '60s', '30s')
+      ]),
+      d(TYPES.L, 'Łatwy bieg', '7 km', 1, [
+        ['Dystans', '7 km, 5:30/km']
+      ]),
+      tempoRun(9, 6, '4:55'),
+      longRun(11, '5:20'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 34
+  {
+    n: 34, totalKm: 31, intensity: 2, phase: 'p4',
+    note: 'Dalszy tapering. Forma jest zbudowana — chronisz ją.',
+    days: [
+      d(TYPES.I, 'Lekkie interwały', '8 km', 2, [
+        ['Rozgrzewka', '1.5 km'],
+        ['6 × 400m @ 4:30/km', 'odp. 90s'],
+        ['Chłodzenie', '1.5 km']
+      ]),
+      d(TYPES.L, 'Łatwy bieg', '7 km', 1, [
+        ['Dystans', '7 km, 5:30/km']
+      ]),
+      d(TYPES.S, 'Siła A — minimalna', '40 min', 2, [
+        ['SIŁA — 2 serie', ''],
+        ...ex('pullups', 2, '5', '90s'),
+        ...ex('pushups', 2, '20', '60s'),
+        ...ex('plank', 2, '50s', '30s'),
+        ...ex('hollow_body', 2, '40s', '30s'),
+        ['BEZ schodów'],
+        ['Cel', 'Utrzymanie nerwowo-mięśniowe']
+      ]),
+      d(TYPES.L, 'Łatwy bieg + strides', '7 km', 1, [
+        ['Bieg', '6 km, 5:30/km'],
+        ['Strides', '4 × 100m']
+      ]),
+      recovery(),
+      longRun(9, '5:20'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 35
+  {
+    n: 35, totalKm: 26, intensity: 2, phase: 'p4',
+    note: 'Tydzień świąteczny — Boże Narodzenie. Lekko, ale konsekwentnie.',
+    days: [
+      easyRun(7, '5:30'),
+      d(TYPES.L, 'Łatwy bieg + strides', '7 km', 1, [
+        ['Bieg', '6 km, 5:25/km'],
+        ['Strides', '5 × 100m']
+      ]),
+      recovery(),
+      d(TYPES.L, 'Bieg świąteczny', '4 km', 1, [
+        ['Dystans', '4 km, 5:30/km'],
+        ['Po jedzeniu', 'Spalenie świątecznych potraw']
+      ]),
+      d(TYPES.S, 'Siła A — utrzymanie', '40 min', 2, [
+        ['SIŁA — 2 serie, lekko', ''],
+        ...ex('pullups', 2, '5', '90s'),
+        ...ex('pushups', 2, '20', '60s'),
+        ...ex('plank', 2, '50s', '30s')
+      ]),
+      longRun(8, '5:25'),
+      recovery()
+    ]
+  },
+
+  // TYDZIEŃ 36 — ostatni przed Tatrami
+  {
+    n: 36, totalKm: 18, intensity: 1, phase: 'p4',
+    note: 'OSTATNI TYDZIEŃ. Kompletne rozluźnienie. Tatry tuż za rogiem.',
+    days: [
+      d(TYPES.L, 'Rozbiegowanie', '7 km', 1, [
+        ['Dystans', '7 km, 5:25/km'],
+        ['Cel', 'Utrzymanie krwi w nogach']
+      ]),
+      d(TYPES.L, 'Mini bieg + strides', '4 km', 1, [
+        ['Bieg', '3 km, 5:20/km'],
+        ['Strides', '4 × 100m']
+      ]),
+      recovery(),
+      d(TYPES.L, 'Rozbiegowanie', '4 km', 1, [
+        ['Dystans', '4 km, 5:25/km']
+      ]),
+      d(TYPES.L, 'Aktywacja', '4 km', 1, [
+        ['Dystans', '4 km + 5 × 100m strides'],
+        ['Jedzenie', 'Dużo węglowodanów — ładowanie przed Tatrami']
+      ]),
+      recovery(),
+      recovery() // ostatni dzień przed wyjazdem
+    ]
+  }
+];
+
+
+// === APP LOGIC — SOFT EDITION ===
+
+const STORAGE_KEY = 'jacek_training_v8_full';
+let state = loadState();
+let currentWeekIdx = 0;
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return { completed: {} };
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+function dateForDay(weekIdx, dayIdx) {
+  const date = new Date(PLAN_START_DATE);
+  date.setDate(date.getDate() + (weekIdx * 7) + dayIdx);
+  return date;
+}
+
+function formatDateShort(date) {
+  return date.getDate() + ' ' + MONTHS_PL_SHORT[date.getMonth()];
+}
+
+function formatDateLong(date) {
+  return date.getDate() + ' ' + MONTHS_PL[date.getMonth()] + ' ' + date.getFullYear();
+}
+
+function formatStamp(date) {
+  return date.getDate() + ' ' + MONTHS_PL[date.getMonth()] + ' ' + date.getFullYear();
+}
+
+function isSameDay(d1, d2) {
+  return d1.getFullYear() === d2.getFullYear() &&
+         d1.getMonth() === d2.getMonth() &&
+         d1.getDate() === d2.getDate();
+}
+
+function isToday(date) { return isSameDay(date, new Date()); }
+
+function isPast(date) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d < today;
+}
+
+function findCurrentWeekIdx() {
+  const today = new Date();
+  for (let wi = 0; wi < WEEKS.length; wi++) {
+    const weekEnd = dateForDay(wi, 6);
+    weekEnd.setHours(23, 59, 59, 999);
+    if (today <= weekEnd) return wi;
+  }
+  return WEEKS.length - 1;
+}
+
+function isDayDone(weekIdx, dayIdx) {
+  return !!state.completed[weekIdx + '-' + dayIdx];
+}
+
+function toggleDay(weekIdx, dayIdx) {
+  const key = weekIdx + '-' + dayIdx;
+  if (state.completed[key]) delete state.completed[key];
+  else state.completed[key] = true;
+  saveState();
+  renderAll();
+}
+
+function getWeekProgress(weekIdx) {
+  let done = 0;
+  for (let di = 0; di < 7; di++) if (isDayDone(weekIdx, di)) done++;
+  return { done, total: 7 };
+}
+
+function getOverallProgress() {
+  let done = 0, total = 0;
+  WEEKS.forEach((_, wi) => {
+    for (let di = 0; di < 7; di++) {
+      total++;
+      if (isDayDone(wi, di)) done++;
+    }
+  });
+  return { done, total };
+}
+
+function getTotalKm() {
+  let km = 0;
+  WEEKS.forEach((wk, wi) => {
+    wk.days.forEach((day, di) => {
+      if (isDayDone(wi, di)) {
+        const m = day.k.match(/(\d+(?:\.\d+)?)\s*km/);
+        if (m) km += parseFloat(m[1]);
+      }
+    });
+  });
+  return Math.round(km);
+}
+
+function getCurrentStreak() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let streak = 0;
+  for (let offset = 0; offset < 365; offset++) {
+    const checkDate = new Date(today);
+    checkDate.setDate(checkDate.getDate() - offset);
+    const dayDiff = Math.floor((checkDate - PLAN_START_DATE) / (1000 * 60 * 60 * 24));
+    if (dayDiff < 0) break;
+    const wi = Math.floor(dayDiff / 7);
+    const di = dayDiff % 7;
+    if (wi >= WEEKS.length) continue;
+
+    const day = WEEKS[wi].days[di];
+    if (day.t === 'odpoczynek') continue;
+
+    if (isDayDone(wi, di)) streak++;
+    else if (checkDate < today) break;
+  }
+  return streak;
+}
+
+function getTypeClass(type) {
+  const map = {
+    'bieg łatwy': 'type-bieg', 'siła': 'type-sila', 'interwały': 'type-interw',
+    'tempo': 'type-tempo', 'długi bieg': 'type-dlugi', 'odpoczynek': 'type-odp',
+    'marsz': 'type-marsz', 'siła+bieg': 'type-mix'
+  };
+  return map[type] || 'type-odp';
+}
+
+function getPhaseTag(phaseId) {
+  return { p1: 'tag-p1', p2: 'tag-p2', p3: 'tag-p3', p4: 'tag-p4' }[phaseId] || '';
+}
+
+function getPhaseName(phaseId) {
+  const phase = PHASES.find(p => p.id === phaseId);
+  return phase ? phase.name : '';
+}
+
+function getPhaseShort(phaseId) {
+  return { p1: 'Fundament', p2: 'Budowa', p3: 'Półmaraton', p4: 'Tatry' }[phaseId] || '';
+}
+
+function renderHeader() {
+  document.getElementById('today-stamp').textContent = formatStamp(new Date());
+
+  const overall = getOverallProgress();
+  const pct = overall.total > 0 ? Math.round((overall.done / overall.total) * 100) : 0;
+  document.getElementById('stat-progress').textContent = pct + '%';
+  document.getElementById('stat-progress-sub').textContent = overall.done + ' / ' + overall.total + ' dni';
+
+  const week = WEEKS[currentWeekIdx];
+  document.getElementById('stat-week').textContent = (currentWeekIdx + 1);
+  document.getElementById('stat-week-sub').textContent = 'faza ' + week.phase.replace('p','') + ' · ' + getPhaseShort(week.phase).toLowerCase();
+
+  document.getElementById('stat-km').textContent = getTotalKm();
+  document.getElementById('stat-streak').textContent = getCurrentStreak();
+
+  const elapsed = Math.floor((new Date() - PLAN_START_DATE) / (1000 * 60 * 60 * 24));
+  const totalDays = WEEKS.length * 7;
+  const timePct = Math.max(0, Math.min(100, Math.round((elapsed / totalDays) * 100)));
+  document.getElementById('gp-fill').style.width = timePct + '%';
+  document.getElementById('gp-text').textContent = timePct + '%';
+}
+
+function renderPhasePills() {
+  const container = document.getElementById('phase-pills');
+  container.innerHTML = '';
+  const currentPhase = WEEKS[currentWeekIdx].phase;
+  PHASES.forEach(phase => {
+    const pill = document.createElement('button');
+    pill.className = 'phase' + (phase.id === currentPhase ? ' current' : '');
+    pill.textContent = phase.name;
+    pill.onclick = () => {
+      currentWeekIdx = phase.weeks[0] - 1;
+      renderAll();
+    };
+    container.appendChild(pill);
+  });
+}
+
+function renderWeekJump() {
+  const select = document.getElementById('week-jump');
+  select.innerHTML = '';
+  WEEKS.forEach((wk, wi) => {
+    const opt = document.createElement('option');
+    opt.value = wi;
+    const start = dateForDay(wi, 0);
+    const end = dateForDay(wi, 6);
+    opt.textContent = 'Tydzień ' + (wi + 1) + ' · ' + formatDateShort(start) + ' – ' + formatDateShort(end);
+    if (wi === currentWeekIdx) opt.selected = true;
+    select.appendChild(opt);
+  });
+  select.onchange = () => {
+    currentWeekIdx = parseInt(select.value);
+    renderAll();
+  };
+}
+
+function renderWeek() {
+  const container = document.getElementById('week-container');
+  const week = WEEKS[currentWeekIdx];
+  const weekStart = dateForDay(currentWeekIdx, 0);
+  const weekEnd = dateForDay(currentWeekIdx, 6);
+  const progress = getWeekProgress(currentWeekIdx);
+
+  let html = '<div class="week-card">';
+
+  html += '<div class="week-head">';
+  html += '<div class="week-meta">';
+  html += '<div class="week-num">Tydzień ' + (currentWeekIdx + 1) + ' z ' + WEEKS.length + '</div>';
+  html += '<div class="week-title">' + week.totalKm + ' km · ' + getPhaseShort(week.phase) + '</div>';
+  html += '<div class="week-dates">' + formatDateShort(weekStart) + ' – ' + formatDateShort(weekEnd) + ' · ' + weekStart.getFullYear() + '</div>';
+  html += '<div class="week-phase-tag ' + getPhaseTag(week.phase) + '">' + getPhaseName(week.phase) + '</div>';
+  html += '</div>';
+
+  html += '<div class="week-stats-row">';
+  html += '<div class="wstat"><div class="wstat-label">Suma km</div><div class="wstat-value">' + week.totalKm + '</div></div>';
+  html += '<div class="wstat"><div class="wstat-label">Intensywność</div><div class="wstat-value intensity">' + week.intensity + '/5</div></div>';
+  html += '<div class="wstat"><div class="wstat-label">Wykonane</div><div class="wstat-value done">' + progress.done + '/7</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  if (week.note) {
+    html += '<div class="week-note">' + week.note + '</div>';
+  }
+
+  html += '<div class="week-progress"><div class="week-progress-fill" style="width:' + ((progress.done / 7) * 100) + '%"></div></div>';
+
+  html += '<div class="days">';
+  week.days.forEach((day, di) => {
+    const date = dateForDay(currentWeekIdx, di);
+    const done = isDayDone(currentWeekIdx, di);
+    const today = isToday(date);
+    const past = isPast(date);
+
+    let dayClass = 'day';
+    if (done) dayClass += ' is-done';
+    if (today) dayClass += ' is-today';
+    if (past && !done) dayClass += ' is-past';
+
+    html += '<div class="' + dayClass + '" data-week="' + currentWeekIdx + '" data-day="' + di + '">';
+
+    html += '<div class="day-check" onclick="event.stopPropagation();handleCheckClick(' + currentWeekIdx + ',' + di + ')">';
+    html += '<div class="checkbox' + (done ? ' checked' : '') + '"></div>';
+    html += '</div>';
+
+    html += '<div class="day-content" onclick="handleRowClick(this.parentElement)">';
+    html += '<div class="day-date">';
+    html += '<div class="day-num">' + date.getDate() + '</div>';
+    html += '<div class="day-dow">' + DAYS_PL[di] + '</div>';
+    html += '</div>';
+    html += '<div class="day-info">';
+    html += '<div class="day-type ' + getTypeClass(day.t) + '">' + day.t + '</div>';
+    html += '<div class="day-name">' + day.n + '</div>';
+    html += '</div>';
+    html += '<div class="day-km">' + day.k + '</div>';
+    html += '<div class="day-arrow">›</div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="day-details">';
+    html += '<div class="intensity-box">';
+    html += '<span class="intensity-label">Intensywność</span>';
+    html += '<div class="intensity-bars">';
+    for (let i = 1; i <= 5; i++) {
+      html += '<div class="ibar' + (i <= day.i ? ' on' : '') + '"></div>';
+    }
+    html += '</div>';
+    html += '<span class="intensity-text">' + day.i + '/5</span>';
+    html += '</div>';
+
+    html += '<div class="detail-list">';
+    day.d.forEach(([label, value]) => {
+      if (label === label.toUpperCase() && label.length > 2 && !value.includes('km') && !value.includes('min') && !label.startsWith('ĆWICZENIE')) {
+        html += '<div class="detail-section">' + label + (value ? ' · ' + value : '') + '</div>';
+      } else if (label.startsWith('ĆWICZENIE: ')) {
+        // Exercise name - special styling
+        const exName = label.replace('ĆWICZENIE: ', '');
+        html += '<div class="detail-row exercise-name">';
+        html += '<div class="detail-label">' + exName + '</div>';
+        html += '<div class="detail-value">' + value + '</div>';
+        html += '</div>';
+      } else if (label === 'JAK') {
+        html += '<div class="detail-row exercise-how">';
+        html += '<div class="detail-label">JAK ROBIĆ</div>';
+        html += '<div class="detail-value">' + value + '</div>';
+        html += '</div>';
+      } else if (label === 'BŁĘDY') {
+        html += '<div class="detail-row exercise-errors">';
+        html += '<div class="detail-label">UWAŻAJ NA</div>';
+        html += '<div class="detail-value">' + value + '</div>';
+        html += '</div>';
+      } else if (label === 'ŁATWIEJ') {
+        html += '<div class="detail-row exercise-easier">';
+        html += '<div class="detail-label">JEŚLI ZA TRUDNE</div>';
+        html += '<div class="detail-value">' + value + '</div>';
+        html += '</div>';
+      } else {
+        html += '<div class="detail-row">';
+        html += '<div class="detail-label">' + label + '</div>';
+        html += '<div class="detail-value">' + value + '</div>';
+        html += '</div>';
+      }
+    });
+    html += '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function handleRowClick(row) {
+  const wasExpanded = row.classList.contains('expanded');
+  document.querySelectorAll('.day.expanded').forEach(r => r.classList.remove('expanded'));
+  if (!wasExpanded) row.classList.add('expanded');
+}
+
+function handleCheckClick(weekIdx, dayIdx) {
+  toggleDay(weekIdx, dayIdx);
+}
+
+function setupNav() {
+  document.getElementById('prev-week').onclick = () => {
+    if (currentWeekIdx > 0) {
+      currentWeekIdx--;
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+  document.getElementById('next-week').onclick = () => {
+    if (currentWeekIdx < WEEKS.length - 1) {
+      currentWeekIdx++;
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+  document.getElementById('today-btn').onclick = () => {
+    currentWeekIdx = findCurrentWeekIdx();
+    renderAll();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  document.getElementById('reset-btn').onclick = () => {
+    document.getElementById('reset-modal').classList.add('show');
+  };
+  document.getElementById('reset-cancel').onclick = () => {
+    document.getElementById('reset-modal').classList.remove('show');
+  };
+  document.getElementById('reset-confirm').onclick = () => {
+    state = { completed: {} };
+    saveState();
+    document.getElementById('reset-modal').classList.remove('show');
+    renderAll();
+  };
+
+  document.getElementById('export-btn').onclick = () => {
+    const overall = getOverallProgress();
+    const km = getTotalKm();
+    let summary = 'Plan treningowy — Tatry 2027\n';
+    summary += 'Eksport: ' + formatDateLong(new Date()) + '\n\n';
+    summary += 'Postęp: ' + overall.done + '/' + overall.total + ' (' + Math.round(overall.done/overall.total*100) + '%)\n';
+    summary += 'Kilometry: ' + km + ' km\n';
+    summary += 'Aktualny tydzień: ' + (findCurrentWeekIdx() + 1) + '/' + WEEKS.length + '\n';
+    summary += 'Streak: ' + getCurrentStreak() + ' dni\n\n';
+    summary += '— Wykonane treningi —\n';
+
+    WEEKS.forEach((wk, wi) => {
+      let weekDone = [];
+      wk.days.forEach((day, di) => {
+        if (isDayDone(wi, di)) {
+          const date = dateForDay(wi, di);
+          weekDone.push('  • ' + formatDateShort(date) + ' — ' + day.n + ' (' + day.k + ')');
+        }
+      });
+      if (weekDone.length > 0) {
+        summary += '\nTydzień ' + (wi + 1) + ':\n' + weekDone.join('\n') + '\n';
+      }
+    });
+
+    const blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tatry_2027_postep_' + new Date().toISOString().split('T')[0] + '.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+}
+
+function updateNavButtons() {
+  document.getElementById('prev-week').disabled = currentWeekIdx === 0;
+  document.getElementById('next-week').disabled = currentWeekIdx === WEEKS.length - 1;
+}
+
+function renderAll() {
+  renderHeader();
+  renderPhasePills();
+  renderWeekJump();
+  renderWeek();
+  updateNavButtons();
+}
+
+function init() {
+  currentWeekIdx = findCurrentWeekIdx();
+  setupNav();
+  renderAll();
+}
+
+window.handleRowClick = handleRowClick;
+window.handleCheckClick = handleCheckClick;
+
+document.addEventListener('DOMContentLoaded', init);
+
+</script>
+</body>
+</html>
